@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "user")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class user {
+public abstract class User {
 
     @Id
     @Column(name = "id")
@@ -78,10 +78,10 @@ public abstract class user {
         this.role = role;
     }
 
-    protected user() {
+    protected User() {
     }
 
-    public user(Long id, String name, String emailAddress, String apogeeCode, String password, Role role) {
+    public User(Long id, String name, String emailAddress, String apogeeCode, String password, Role role) {
         this.id = id;
         this.name = name;
         this.emailAddress = emailAddress;

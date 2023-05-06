@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "Voter")
 
-public class Voter extends user {
+public class Voter extends User {
 
 
 

@@ -4,7 +4,7 @@ package com.Votechainbackend.BackendofADEIVotechain.entities;
 import jakarta.persistence.*;
 
 @Table(name = "committees")
-public class Committee extends user {
+public class Committee extends User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
