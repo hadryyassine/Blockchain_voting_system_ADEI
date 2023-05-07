@@ -9,8 +9,6 @@ import jakarta.persistence.*;
 public class Voter extends User {
 
 
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
