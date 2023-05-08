@@ -1,26 +1,47 @@
 package com.Votechainbackend.BackendofADEIVotechain.voters;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
-import com.Votechainbackend.BackendofADEIVotechain.voters.VotersModel;
-import java.lang.String;
+import com.Votechainbackend.BackendofADEIVotechain.entities.Voter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import com.Votechainbackend.BackendofADEIVotechain.voters.VotersService;
 
-@RestController // This is a REST API Controller
-@RequestMapping(path = "api/v1/voters")
+import java.net.URI;
+import java.util.Optional;
+
+
+@RestController
+@RequestMapping("/api/voters")
 public class VotersController {
 
-    @GetMapping
-    public String getVoters() {
-        return List.of(
-                new VotersModel(
-                        1L,
-                        "John",
-                        "john.smith@gmail.com",
-                        "password",
-                        "1234567890"
-                )).toString();
+    private final VotersService voterService;
+
+    @Autowired
+    public VotersController(VotersService voterService) {
+        this.voterService = voterService;
     }
 
+    @PostMapping
+    public ResponseEntity<Voter> createVoter(@RequestBody Voter voter) {
+        Voter createdVoter = voterService.createVoter(voter);
+        return ResponseEntity.created(URI.create("/api/voters/" + createdVoter.getId())).body(createdVoter);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Voter> getVoterById(@PathVariable Long id) {
+        Optional<Voter> voter = voterService.getVoterById(id);
+        return voter.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Voter> updateVoter(@PathVariable Long id, @RequestBody Voter voter) {
+        Optional<Voter> updatedVoter = voterService.updateVoter(id, voter);
+        return updatedVoter.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteVoter(@PathVariable Long id) {
+        voterService.deleteVoter(id);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -1,5 +1,5 @@
 package com.Votechainbackend.BackendofADEIVotechain.entities;
-
+import com.Votechainbackend.BackendofADEIVotechain.entities.Role;
 import jakarta.persistence.*;
 
 @Entity
