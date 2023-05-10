@@ -49,7 +49,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        // You can add a field to the User entity to store the account status and return the value here.
+        // We can add a field to the User entity to store the account status and return the value here.
         return true;
     }
 }
