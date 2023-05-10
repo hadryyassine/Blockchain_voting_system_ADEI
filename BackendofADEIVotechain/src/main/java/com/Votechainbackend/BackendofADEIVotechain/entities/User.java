@@ -15,7 +15,7 @@ public abstract class User {
     @Column(name = "name")
     private String name;
     @Column(name = "email")
-    private String emailAddress;
+    public String emailAddress;
     @Column(name = "apogee_Code")
 
     private String apogeeCode;
@@ -29,6 +29,7 @@ public abstract class User {
 
 
     // Getters and setters
+
 
     public Long getId() {
         return id;
@@ -89,5 +90,9 @@ public abstract class User {
         this.password = password;
         this.role = role;
     }
+
+
+
+
 
 }
