@@ -53,6 +53,8 @@ public class UserServiceImpl implements UserService , CustomUserDetailsService{
 
     @Override
     public User registerUser(User user) {
+
+
         if (isEmailInUse(user.getEmailAddress())) {
             throw new IllegalStateException("Email address is already in use.");
         }
@@ -84,6 +86,8 @@ public class UserServiceImpl implements UserService , CustomUserDetailsService{
         if (!passmatcher.matches()) {
             throw new IllegalArgumentException("Password must have at least 8 characters, including upper and lower case letters, numbers, and special characters.");
         }
+
+
 
 
         // Encode the password before saving the user

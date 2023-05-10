@@ -1,16 +1,15 @@
 package com.Votechainbackend.BackendofADEIVotechain.dto;
 
+import com.Votechainbackend.BackendofADEIVotechain.entities.User;
+
 public class LoginRequest {
-    private String username;
+
+    public User user;
     private String password;
 
     // Getters and setters
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public String getEmailAddress() {
+        return user.getEmailAddress();
     }
 
     public String getPassword() {
