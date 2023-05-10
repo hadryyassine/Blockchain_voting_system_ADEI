@@ -1,6 +1,5 @@
 package com.Votechainbackend.BackendofADEIVotechain.security;
 
-import com.Votechainbackend.BackendofADEIVotechain.entities.Role;
 import com.Votechainbackend.BackendofADEIVotechain.entities.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,6 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class CustomUserDetails implements UserDetails {
+
     private final User user;
 
     public CustomUserDetails(User user) {
@@ -18,7 +18,8 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(user.getRole().name()));
+        // Return a collection containing the user's role
+        return Collections.singleton(new SimpleGrantedAuthority(user.getRole().toString()));
     }
 
     @Override
@@ -33,26 +34,22 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
-    }
-
-
-    public User getUser() {
-        return user;
+        // You can add a field to the User entity to store the account status and return the value here.
+        return true;
     }
 }
