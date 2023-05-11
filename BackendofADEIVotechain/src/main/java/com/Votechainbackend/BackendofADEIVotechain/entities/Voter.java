@@ -14,6 +14,7 @@ public class Voter extends User {
     @Column(name = "id")
     private Long id;
 
+
     @Override
     public Long getId() {
         return id;
@@ -24,7 +25,7 @@ public class Voter extends User {
         this.id = id;
     }
 
-    protected Voter() {
+    public Voter() {
 
     }
 
