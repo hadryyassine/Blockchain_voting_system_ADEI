@@ -30,6 +30,7 @@ public abstract class User {
 
     // Getters and setters
 
+
     public Long getId() {
         return id;
     }
@@ -38,13 +39,14 @@ public abstract class User {
         this.id = id;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getEmailAddress() {
         return emailAddress;
@@ -78,7 +80,7 @@ public abstract class User {
         this.role = role;
     }
 
-    protected User() {
+    public User() {
     }
 
     public User(Long id, String name, String emailAddress, String apogeeCode, String password, Role role) {
@@ -89,5 +91,9 @@ public abstract class User {
         this.password = password;
         this.role = role;
     }
+
+
+
+
 
 }

@@ -9,12 +9,11 @@ import jakarta.persistence.*;
 public class Voter extends User {
 
 
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
 
     @Override
     public Long getId() {
@@ -26,7 +25,7 @@ public class Voter extends User {
         this.id = id;
     }
 
-    protected Voter() {
+    public Voter() {
 
     }
 
