@@ -3,12 +3,15 @@ package com.Votechainbackend.BackendofADEIVotechain.entities;
 
 import jakarta.persistence.*;
 import java.util.Date;
+
 import java.util.List;
+
 
 @Entity
 @Table(name = "elections")
 
 public class Election {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -25,6 +28,7 @@ public class Election {
 
     @Column(name = "is_open")
     private boolean isOpen;
+
 
     // Getters and setters
 
@@ -67,6 +71,20 @@ public class Election {
     public void setOpen(boolean open) {
         isOpen = open;
     }
+
+    public Election() {
+
+    }
+
+    public Election(Long id, int year, Date startDate, Date endDate, boolean isOpen) {
+        this.id = id;
+        this.year = year;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.isOpen = isOpen;
+    }
+
+
 
 
 }

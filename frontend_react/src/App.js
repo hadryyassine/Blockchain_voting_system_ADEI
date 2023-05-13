@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import SignupPage from './Pages/Signup';
 import LoginPage from './Pages/Login';
+
 import Table from './components/CandidateTable';
 import UpdateCandidate from './Pages/UpdateCandidate';
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Routes>
             <Route path="/" element={<LoginPage/>} />
             <Route path="/signup" element={<SignupPage/>} />
+
             <Route path='/candidates' element={<Table />}/>
             <Route path='/candidate/update/:Candidateid' element={<UpdateCandidate />}/>
         </Routes>
@@ -23,6 +25,7 @@ function App() {
     </div>
     </div>
   
+
   );
 }
 

@@ -1,6 +1,7 @@
 package com.Votechainbackend.BackendofADEIVotechain.services;
 
 
+
 import com.Votechainbackend.BackendofADEIVotechain.entities.Candidate;
 import com.Votechainbackend.BackendofADEIVotechain.repositories.CandidateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,4 +30,5 @@ public class CandidateService {
     {
         candidateRepository.deleteById(id);
     }
+
 }
