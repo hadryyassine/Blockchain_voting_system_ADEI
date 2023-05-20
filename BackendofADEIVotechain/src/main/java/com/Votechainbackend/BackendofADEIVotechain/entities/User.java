@@ -1,19 +1,24 @@
 package com.Votechainbackend.BackendofADEIVotechain.entities;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class User {
+public class User {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+
     @Column(name = "name")
-    private String name;
+    private String username;
     @Column(name = "email")
     private String emailAddress;
     @Column(name = "apogee_Code")
@@ -23,9 +28,18 @@ public abstract class User {
     @Column(name = "password")
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role")
-    private Role role;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(  name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<RoleE> roles = new HashSet<>();
+
+    public User() {
+
+    }
+
+
 
 
     // Getters and setters
@@ -40,11 +54,11 @@ public abstract class User {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.username = name;
     }
 
     public String getName() {
-        return name;
+        return username;
     }
 
 
@@ -72,27 +86,22 @@ public abstract class User {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    public Set<RoleE> getRoles() {
+        return roles;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoles(Set<RoleE> roles) {
+        this.roles = roles;
     }
 
-    public User() {
-    }
 
-    public User(Long id, String name, String emailAddress, String apogeeCode, String password, Role role) {
-        this.id = id;
-        this.name = name;
+
+    public User(String username, String emailAddress, String apogeeCode, String password) {
+        this.username = username;
         this.emailAddress = emailAddress;
         this.apogeeCode = apogeeCode;
         this.password = password;
-        this.role = role;
     }
-
-
 
 
 

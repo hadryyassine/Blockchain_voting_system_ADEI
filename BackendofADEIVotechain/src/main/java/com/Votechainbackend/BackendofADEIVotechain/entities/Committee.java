@@ -1,7 +1,7 @@
 package com.Votechainbackend.BackendofADEIVotechain.entities;
 
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Table(name = "committees")
 public class Committee extends User {
@@ -24,7 +24,6 @@ public class Committee extends User {
     }
 
     public Committee(Long id, String name, String emailAddress, String apogeeCode, String password, Role role, Long id1) {
-        super(id, name, emailAddress, apogeeCode, password, role);
         this.id = id1;
     }
 

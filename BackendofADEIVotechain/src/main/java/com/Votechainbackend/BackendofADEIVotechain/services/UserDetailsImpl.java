@@ -17,7 +17,7 @@ public class UserDetailsImpl implements UserDetails {
 
     private Long id;
 
-    private String name;
+    private String username;
 
     private String emailAddress;
 
@@ -32,7 +32,7 @@ public class UserDetailsImpl implements UserDetails {
     public UserDetailsImpl(Long id, String name, String emailAddress, String password, String apogeeCode,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
-        this.name = name;
+        this.username = name;
         this.emailAddress = emailAddress;
         this.password = password;
         this.apogeeCode = apogeeCode;
@@ -79,7 +79,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return username;
     }
 
     @Override

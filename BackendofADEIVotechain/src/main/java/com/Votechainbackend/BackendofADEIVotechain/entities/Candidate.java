@@ -1,7 +1,7 @@
 package com.Votechainbackend.BackendofADEIVotechain.entities;
 
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "candidates")
@@ -62,7 +62,6 @@ public class Candidate extends User {
     protected Candidate() {
     }
     public Candidate(Long id, String name, String emailAddress, String apogeeCode, String password, Role role, Long id1, int nbrVotes, String positionTitle, Election election) {
-        super(id, name, emailAddress, apogeeCode, password, role);
         this.id = id1;
         this.nbrVotes = nbrVotes;
         this.positionTitle = positionTitle;
