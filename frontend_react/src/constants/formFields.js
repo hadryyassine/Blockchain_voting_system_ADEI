@@ -70,7 +70,7 @@ const signupFields=[
         id:"role",
         name:"role",
         type:"select",
-        options: ['voter', 'candidate'],
+        options: ['VOTER', 'CANDIDATE'],
         isRequired:true,
         placeholder:"role"   
     }

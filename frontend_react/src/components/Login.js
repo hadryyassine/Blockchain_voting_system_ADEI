@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { loginFields } from "../constants/formFields";
 import FormAction from "./FormAction";
 import {Input} from "./Input";
+import { login } from '../api/userApi';
+
 
 const fields=loginFields;
 let fieldsState = {};
@@ -21,6 +23,16 @@ export default function Login(){
 
     //Handle Login API Integration here
     const authenticateUser = () =>{
+
+        login(loginState.email, loginState.password)
+        .then(response => {
+            console.log(response);
+            // handle successful login
+        })
+        .catch(error => {
+            console.log(error);
+            // handle error
+        });
 
     }
 

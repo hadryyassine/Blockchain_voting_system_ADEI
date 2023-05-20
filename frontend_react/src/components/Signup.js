@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { signupFields } from "../constants/formFields"
 import FormAction from "./FormAction";
 import {Input} from "./Input";
+import { register } from '../api/userApi';
 
 const fields=signupFields;
 let fieldsState={};
@@ -21,6 +22,17 @@ export default function Signup(){
 
   //handle Signup API Integration here
   const createAccount=()=>{
+    register(signupState)
+    .then(response => {
+        console.log(response);
+        // handle successful registration
+        window.location.href = "https://www.google.com";
+
+    })
+    .catch(error => {
+        console.log(error);
+        // handle error
+    });
 
   }
 
@@ -67,7 +79,7 @@ fields.map(field => {
     }
 })
             }
-          <FormAction handleSubmit={handleSubmit} text="Signup" />
+          <FormAction  handleSubmit={handleSubmit} text="Signup" />
         </div>
 
          
