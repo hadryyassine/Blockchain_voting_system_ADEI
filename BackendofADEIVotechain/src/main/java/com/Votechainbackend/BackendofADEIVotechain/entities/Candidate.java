@@ -1,6 +1,7 @@
 package com.Votechainbackend.BackendofADEIVotechain.entities;
 
 
+
 import javax.persistence.*;
 
 @Entity
@@ -11,7 +12,7 @@ public class Candidate extends User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "id")
     private Long id;
     @Column(name = "nbrVotes")
     private int nbrVotes;
@@ -59,10 +60,9 @@ public class Candidate extends User {
         this.election = election;
     }
 
-    public Candidate() {
+    protected Candidate() {
     }
-    public Candidate(String username, String emailAddress, String apogeeCode, String password) {
-        super(username, emailAddress, apogeeCode, password);
-
+    public Candidate(String name, String emailAddress, String apogeeCode, String password) {
+        super(name, emailAddress, apogeeCode, password);
     }
 }
