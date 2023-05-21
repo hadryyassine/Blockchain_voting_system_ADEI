@@ -3,6 +3,7 @@ package com.Votechainbackend.BackendofADEIVotechain.entities;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -29,7 +30,18 @@ public class Election {
     private boolean isOpen;
 
 
+    @OneToMany(mappedBy = "election", cascade = CascadeType.ALL)
+    private List<Candidate> candidates;
 
+    // ...
+
+    public List<Candidate> getCandidates() {
+        return candidates;
+    }
+
+    public void setCandidates(List<Candidate> candidates) {
+        this.candidates = candidates;
+    }
 
     // Getters and setters
 

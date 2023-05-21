@@ -7,8 +7,6 @@ import javax.persistence.*;
 @Table(name = "candidates")
 
 public class Candidate extends User {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -63,6 +61,5 @@ public class Candidate extends User {
     }
     public Candidate(String username, String emailAddress, String apogeeCode, String password) {
         super(username, emailAddress, apogeeCode, password);
-
     }
 }
