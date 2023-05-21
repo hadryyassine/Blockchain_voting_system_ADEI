@@ -1,8 +1,9 @@
-package com.Votechainbackend.BackendofADEIVotechain.repositories;
-import com.Votechainbackend.BackendofADEIVotechain.entities.Election;
-import org.springframework.data.jpa.repository.JpaRepository;
+package com.example.VotingSystem.repositories;
+
+import com.example.VotingSystem.entities.Election;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-
-public interface ElectionRepository extends JpaRepository<Election,Long> {
+@Repository
+public interface ElectionRepository extends CrudRepository<Election,Long> {
 }

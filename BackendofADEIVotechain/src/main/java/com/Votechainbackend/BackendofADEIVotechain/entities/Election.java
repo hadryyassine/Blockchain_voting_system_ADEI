@@ -1,37 +1,34 @@
-package com.Votechainbackend.BackendofADEIVotechain.entities;
+package com.example.VotingSystem.entities;
 
 
 import jakarta.persistence.*;
-import java.util.Date;
 
+import java.util.Date;
 
 @Entity
 @Table(name = "elections")
 
 public class Election {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     @Column(name = "year")
     private int year;
-    @Column(name = "start_date")
+    @Column(name = "proposal_start_date")
+
+    private Date pstartDate;
+
+    @Column(name = "proposal_end_date")
+
+    private Date pendDate;
+
+    @Column(name = "Election_start_date")
 
     private Date startDate;
 
-    @Column(name = "end_date")
-
-    private Date endDate;
-
-    @Column(name = "is_open")
-    private boolean isOpen;
-
-
-
-
-    // Getters and setters
+    @Column(name = "Duration")
+    private int duration;
 
     public Long getId() {
         return id;
@@ -49,6 +46,22 @@ public class Election {
         this.year = year;
     }
 
+    public Date getPstartDate() {
+        return pstartDate;
+    }
+
+    public void setPstartDate(Date pstartDate) {
+        this.pstartDate = pstartDate;
+    }
+
+    public Date getPendDate() {
+        return pendDate;
+    }
+
+    public void setPendDate(Date pendDate) {
+        this.pendDate = pendDate;
+    }
+
     public Date getStartDate() {
         return startDate;
     }
@@ -57,12 +70,12 @@ public class Election {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public int getDuration() {
+        return duration;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
     public boolean isOpen() {
@@ -70,20 +83,11 @@ public class Election {
     }
 
     public void setOpen(boolean open) {
-        isOpen = open;
-    }
-    public Election() {
-
+       isOpen = open;
     }
 
-    public Election(Long id, int year, Date startDate, Date endDate, boolean isOpen) {
-        this.id = id;
-        this.year = year;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.isOpen = isOpen;
-    }
-
+    @Column(name = "is_open")
+    private boolean isOpen;
 
 
 }
