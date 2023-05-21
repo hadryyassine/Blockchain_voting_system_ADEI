@@ -66,13 +66,13 @@ const signupFields=[
 
     {
         labelText:"Role",
-        labelFor:"role",
-        id:"role",
-        name:"role",
+        labelFor:"roles",
+        id:"roles",
+        name:"roles",
         type:"select",
         options: ['VOTER', 'CANDIDATE'],
         isRequired:true,
-        placeholder:"role"   
+        placeholder:"roles"   
     }
 
     

@@ -4,12 +4,19 @@ import FormAction from "./FormAction";
 import {Input} from "./Input";
 import { register } from '../api/userApi';
 
+
 const fields=signupFields;
 let fieldsState={};
 
+
+
 fields.forEach(field => fieldsState[field.id]='');
 
+
+
 export default function Signup(){
+
+  
   const [signupState,setSignupState]=useState(fieldsState);
 
   const handleChange=(e)=>setSignupState({...signupState,[e.target.id]:e.target.value});
@@ -20,9 +27,15 @@ export default function Signup(){
     createAccount()
   }
 
+
+
+  
+  
+
   //handle Signup API Integration here
   const createAccount=()=>{
-    register(signupState)
+
+    register(signupState.name, signupState.emailAddress, signupState.password, signupState.apogeeCode, [signupState.roles])
     .then(response => {
         console.log(response);
         // handle successful registration
@@ -32,6 +45,10 @@ export default function Signup(){
     .catch(error => {
         console.log(error);
         // handle error
+        if (error.response) {
+            console.log(error.response.data); // => the response payload 
+            alert(error.response.data.message); // Display the error message
+        }
     });
 
   }
