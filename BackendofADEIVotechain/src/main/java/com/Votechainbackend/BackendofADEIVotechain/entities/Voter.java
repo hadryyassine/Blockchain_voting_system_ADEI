@@ -11,7 +11,7 @@ public class Voter extends User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "user_id")
     private Long id;
 
 
@@ -29,7 +29,8 @@ public class Voter extends User {
 
     }
 
-    public Voter(Long id, String name, String emailAddress, String apogeeCode, String password, Role role, Long id1) {
-        this.id = id1;
+    public Voter(String username, String emailAddress, String apogeeCode, String password) {
+        super(username, emailAddress, apogeeCode, password);
+
     }
 }

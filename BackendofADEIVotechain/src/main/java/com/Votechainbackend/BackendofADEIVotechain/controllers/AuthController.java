@@ -4,11 +4,11 @@ import com.Votechainbackend.BackendofADEIVotechain.dto.JwtResponse;
 import com.Votechainbackend.BackendofADEIVotechain.dto.LoginRequest;
 import com.Votechainbackend.BackendofADEIVotechain.dto.MessageResponse;
 import com.Votechainbackend.BackendofADEIVotechain.dto.SignupRequest;
-import com.Votechainbackend.BackendofADEIVotechain.entities.Role;
-import com.Votechainbackend.BackendofADEIVotechain.entities.RoleE;
-import com.Votechainbackend.BackendofADEIVotechain.entities.User;
+import com.Votechainbackend.BackendofADEIVotechain.entities.*;
+import com.Votechainbackend.BackendofADEIVotechain.repositories.CandidateRepository;
 import com.Votechainbackend.BackendofADEIVotechain.repositories.RoleRepository;
 import com.Votechainbackend.BackendofADEIVotechain.repositories.UserRepository;
+import com.Votechainbackend.BackendofADEIVotechain.repositories.VoterRepository;
 import com.Votechainbackend.BackendofADEIVotechain.security.JwtUtils;
 import com.Votechainbackend.BackendofADEIVotechain.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +36,13 @@ public class AuthController {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    VoterRepository voterRepository;
+
+    @Autowired
+    CandidateRepository candidateRepository;
+
+
 
     @Autowired
     RoleRepository roleRepository;
@@ -101,11 +108,25 @@ public class AuthController {
                 });
 
 
-        User user = new User(signUpRequest.getName(),signUpRequest.getEmailAdress(),
-                signUpRequest.getApogeeCode(),
-                encoder.encode(signUpRequest.getPassword()));
-        user.setRoles(roles);
+        User user;
+        if (strRoles.contains(Role.VOTER)) {
+            user = new Voter(signUpRequest.getName(),signUpRequest.getEmailAdress(),
+                    signUpRequest.getApogeeCode(),
+                    encoder.encode(signUpRequest.getPassword()));
+        } else if (strRoles.contains(Role.CANDIDATE)) {
+            user = new Candidate(signUpRequest.getName(),signUpRequest.getEmailAdress(),
+                    signUpRequest.getApogeeCode(),
+                    encoder.encode(signUpRequest.getPassword()));
+        } else {
+            user = new User(signUpRequest.getName(),signUpRequest.getEmailAdress(),
+                    signUpRequest.getApogeeCode(),
+                    encoder.encode(signUpRequest.getPassword()));
+        }
+
+
         userRepository.save(user);
+
+
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }

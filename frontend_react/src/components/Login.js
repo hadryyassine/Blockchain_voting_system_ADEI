@@ -31,8 +31,6 @@ export default function Login(){
         login(loginState.emailAdress, loginState.password)
         .then(response => {
             console.log('Login API response received:', response);
-            console.log(response.data.id);
-
             // handle successful login
             window.location.href = "https://www.ieee.org";
         })
