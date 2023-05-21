@@ -36,7 +36,6 @@ public class UserDetailsImpl implements UserDetails {
         this.emailAddress = emailAddress;
         this.password = password;
         this.apogeeCode = apogeeCode;
-
         this.authorities = authorities;
     }
 

@@ -41,7 +41,6 @@ public class User {
 
 
 
-
     // Getters and setters
 
 
@@ -96,7 +95,7 @@ public class User {
 
 
 
-    public User(String username, String emailAddress, String apogeeCode, String password) {
+    public User(String username, String emailAddress, String apogeeCode, String password ) {
         this.username = username;
         this.emailAddress = emailAddress;
         this.apogeeCode = apogeeCode;

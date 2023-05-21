@@ -1,6 +1,9 @@
 package com.Votechainbackend.BackendofADEIVotechain.dto;
 
 
+import com.Votechainbackend.BackendofADEIVotechain.entities.Role;
+import com.Votechainbackend.BackendofADEIVotechain.entities.RoleE;
+
 import java.util.Set;
 
 
@@ -8,7 +11,7 @@ public class SignupRequest {
 
     private String emailAdress;
 
-    private Set<String> role;
+    private Set<Role> role;
 
 
     private String password;
@@ -32,11 +35,11 @@ public class SignupRequest {
         this.emailAdress = emailAdress;
     }
 
-    public Set<String> getRole() {
+    public Set<Role> getRole() {
         return role;
     }
 
-    public void setRole(Set<String> role) {
+    public void setRole(Set<Role> role) {
         this.role = role;
     }
 
