@@ -38,6 +38,7 @@ export default function Signup(){
     register(signupState.name, signupState.emailAddress, signupState.password, signupState.apogeeCode, [signupState.roles])
     .then(response => {
         console.log(response);
+
         // handle successful registration
         window.location.href = "https://www.google.com";
 
@@ -52,6 +53,8 @@ export default function Signup(){
     });
 
   }
+
+
 
     return(
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
