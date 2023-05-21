@@ -9,6 +9,7 @@ import javax.persistence.*;
 public class Voter extends User {
 
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -24,6 +25,7 @@ public class Voter extends User {
     public void setId(Long id) {
         this.id = id;
     }
+
 
     public Voter() {
 

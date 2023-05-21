@@ -4,12 +4,13 @@ package com.Votechainbackend.BackendofADEIVotechain.entities;
 import javax.persistence.*;
 import java.util.Date;
 
+import java.util.List;
+
 
 @Entity
 @Table(name = "elections")
 
 public class Election {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,8 +28,6 @@ public class Election {
 
     @Column(name = "is_open")
     private boolean isOpen;
-
-
 
 
     // Getters and setters
@@ -72,6 +71,7 @@ public class Election {
     public void setOpen(boolean open) {
         isOpen = open;
     }
+
     public Election() {
 
     }
@@ -83,6 +83,7 @@ public class Election {
         this.endDate = endDate;
         this.isOpen = isOpen;
     }
+
 
 
 
