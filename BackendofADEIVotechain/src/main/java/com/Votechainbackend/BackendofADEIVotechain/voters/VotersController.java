@@ -1,14 +1,14 @@
 package com.Votechainbackend.BackendofADEIVotechain.voters;
 
+import com.Votechainbackend.BackendofADEIVotechain.entities.Candidate;
 import com.Votechainbackend.BackendofADEIVotechain.entities.Voter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.Votechainbackend.BackendofADEIVotechain.voters.VotersService;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/api/voters")
@@ -43,5 +43,15 @@ public class VotersController {
     public ResponseEntity<Void> deleteVoter(@PathVariable Long id) {
         voterService.deleteVoter(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{voterId}/vote/{positionTitle}")
+    public void addVote(@PathVariable("voterId") Long voterId, @PathVariable("positionTitle") String positionTitle) {
+        voterService.vote(voterId, positionTitle);
+    }
+
+    @GetMapping("/votes")
+    public List<Candidate> getVotes() {
+        return voterService.getVotes();
     }
 }

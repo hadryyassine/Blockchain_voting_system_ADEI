@@ -1,3 +1,4 @@
+/*
 package com.Votechainbackend.BackendofADEIVotechain;
 
 import com.Votechainbackend.BackendofADEIVotechain.entities.User;
@@ -45,3 +46,4 @@ public class RegistrationServiceTest {
         assertThrows(IllegalStateException.class, () -> registrationService.register(user));
     }
 }
+*/

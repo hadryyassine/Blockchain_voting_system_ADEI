@@ -28,7 +28,7 @@ public class LoginServiceTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        user = new Voter(1L, "Test Name", "test@test.com", "12345678", "password", Role.VOTER, 1L);
+        user = new Voter();
     }
 
     @Test

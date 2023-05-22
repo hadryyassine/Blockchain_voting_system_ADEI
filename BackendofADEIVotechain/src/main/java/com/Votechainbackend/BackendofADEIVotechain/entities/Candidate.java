@@ -59,7 +59,7 @@ public class Candidate extends User {
         this.election = election;
     }
 
-    protected Candidate() {
+    public Candidate() {
     }
     public Candidate(Long id, String name, String emailAddress, String apogeeCode, String password, Role role, Long id1, int nbrVotes, String positionTitle, Election election) {
         super(id, name, emailAddress, apogeeCode, password, role);
