@@ -6,7 +6,6 @@ import {
 } from "react-router-dom";
 import SignupPage from './Pages/Signup';
 import LoginPage from './Pages/Login';
-
 function App() {
   return (
     <div className="min-h-full h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
