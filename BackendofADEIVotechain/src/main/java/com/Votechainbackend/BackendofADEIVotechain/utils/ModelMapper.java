@@ -1,8 +1,8 @@
 package com.Votechainbackend.BackendofADEIVotechain.utils;
 
 
-import com.Votechainbackend.BackendofADEIVotechain.dto.ChoiceResponse;
-import com.Votechainbackend.BackendofADEIVotechain.dto.PollResponse;
+import com.Votechainbackend.BackendofADEIVotechain.dto.CandidateResponse;
+import com.Votechainbackend.BackendofADEIVotechain.dto.ElectionResponse;
 import com.Votechainbackend.BackendofADEIVotechain.dto.UserSummary;
 import com.Votechainbackend.BackendofADEIVotechain.entities.Poll;
 import com.Votechainbackend.BackendofADEIVotechain.entities.User;
@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 
 public class ModelMapper {
 
-    public static PollResponse mapPollToPollResponse(Poll poll, Map<Long, Long> choiceVotesMap, User creator, Long userVote) {
-        PollResponse pollResponse = new PollResponse();
+    public static ElectionResponse mapPollToPollResponse(Poll poll, Map<Long, Long> choiceVotesMap, User creator, Long userVote) {
+        ElectionResponse pollResponse = new ElectionResponse();
         pollResponse.setId(poll.getId());
         pollResponse.setQuestion(poll.getQuestion());
         pollResponse.setCreationDateTime(poll.getCreatedAt());
@@ -23,8 +23,8 @@ public class ModelMapper {
         Instant now = Instant.now();
         pollResponse.setExpired(poll.getExpirationDateTime().isBefore(now));
 
-        List<ChoiceResponse> choiceResponses = poll.getChoices().stream().map(choice -> {
-            ChoiceResponse choiceResponse = new ChoiceResponse();
+        List<CandidateResponse> choiceResponses = poll.getChoices().stream().map(choice -> {
+            CandidateResponse choiceResponse = new CandidateResponse();
             choiceResponse.setId(choice.getId());
             choiceResponse.setText(choice.getText());
 
@@ -44,7 +44,7 @@ public class ModelMapper {
             pollResponse.setSelectedChoice(userVote);
         }
 
-        long totalVotes = pollResponse.getChoices().stream().mapToLong(ChoiceResponse::getVoteCount).sum();
+        long totalVotes = pollResponse.getChoices().stream().mapToLong(CandidateResponse::getVoteCount).sum();
         pollResponse.setTotalVotes(totalVotes);
 
         return pollResponse;

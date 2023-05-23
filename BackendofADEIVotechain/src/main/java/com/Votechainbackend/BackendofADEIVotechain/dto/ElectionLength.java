@@ -3,7 +3,7 @@ package com.Votechainbackend.BackendofADEIVotechain.dto;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
-public class PollLength {
+public class ElectionLength {
     @NotNull
     @Max(7)
     private Integer days;

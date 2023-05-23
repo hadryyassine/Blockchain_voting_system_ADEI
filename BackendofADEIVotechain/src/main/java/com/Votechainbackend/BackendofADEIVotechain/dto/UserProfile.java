@@ -4,18 +4,18 @@ import java.time.Instant;
 
 public class UserProfile {
     private Long id;
-    private String username;
+    private String apogeecode;
     private String name;
     private Instant joinedAt;
-    private Long pollCount;
+    private Long electionCount;
     private Long voteCount;
 
-    public UserProfile(Long id, String username, String name, Instant joinedAt, Long pollCount, Long voteCount) {
+    public UserProfile(Long id, String apogeecode, String name, Instant joinedAt, Long electionCount, Long voteCount) {
         this.id = id;
-        this.username = username;
+        this.apogeecode = apogeecode;
         this.name = name;
         this.joinedAt = joinedAt;
-        this.pollCount = pollCount;
+        this.electionCount = electionCount;
         this.voteCount = voteCount;
     }
 
@@ -28,11 +28,11 @@ public class UserProfile {
     }
 
     public String getUsername() {
-        return username;
+        return apogeecode;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUsername(String apogeecode) {
+        this.apogeecode = apogeecode;
     }
 
     public String getName() {
@@ -52,11 +52,11 @@ public class UserProfile {
     }
 
     public Long getPollCount() {
-        return pollCount;
+        return electionCount;
     }
 
-    public void setPollCount(Long pollCount) {
-        this.pollCount = pollCount;
+    public void setPollCount(Long electionCount) {
+        this.electionCount = electionCount;
     }
 
     public Long getVoteCount() {

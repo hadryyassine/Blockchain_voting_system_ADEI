@@ -11,7 +11,7 @@ public class SignUpRequest {
 
     @NotBlank
     @Size(min = 3, max = 15)
-    private String username;
+    private String apogeecode;
 
     @NotBlank
     @Size(max = 40)
@@ -30,12 +30,12 @@ public class SignUpRequest {
         this.name = name;
     }
 
-    public String getUsername() {
-        return username;
+    public String getApogeecode() {
+        return apogeecode;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setApogeecode(String apogeecode) {
+        this.apogeecode = apogeecode;
     }
 
     public String getEmail() {

@@ -3,14 +3,14 @@ import javax.validation.constraints.NotNull;
 
 public class VoteRequest {
     @NotNull
-    private Long choiceId;
+    private Long candidateId;
 
-    public Long getChoiceId() {
-        return choiceId;
+    public Long getCandidateId() {
+        return candidateId;
     }
 
-    public void setChoiceId(Long choiceId) {
-        this.choiceId = choiceId;
+    public void setCandidateId(Long candidateId) {
+        this.candidateId = candidateId;
     }
 }
 

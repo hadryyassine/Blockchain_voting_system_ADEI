@@ -3,16 +3,16 @@ package com.Votechainbackend.BackendofADEIVotechain.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public class ChoiceRequest {
+public class CandidateRequest {
     @NotBlank
     @Size(max = 40)
-    private String text;
+    private String name;
 
-    public String getText() {
-        return text;
+    public String getName() {
+        return name;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setName(String name) {
+        this.name = name;
     }
 }

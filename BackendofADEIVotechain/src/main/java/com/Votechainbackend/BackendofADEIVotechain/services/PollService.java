@@ -2,8 +2,8 @@ package com.Votechainbackend.BackendofADEIVotechain.services;
 
 
 import com.Votechainbackend.BackendofADEIVotechain.dto.PagedResponse;
-import com.Votechainbackend.BackendofADEIVotechain.dto.PollRequest;
-import com.Votechainbackend.BackendofADEIVotechain.dto.PollResponse;
+import com.Votechainbackend.BackendofADEIVotechain.dto.ElectionRequest;
+import com.Votechainbackend.BackendofADEIVotechain.dto.ElectionResponse;
 import com.Votechainbackend.BackendofADEIVotechain.dto.VoteRequest;
 import com.Votechainbackend.BackendofADEIVotechain.entities.*;
 import com.Votechainbackend.BackendofADEIVotechain.exceptions.BadRequestException;
@@ -46,7 +46,7 @@ public class PollService {
 
     private static final Logger logger = LoggerFactory.getLogger(PollService.class);
 
-    public PagedResponse<PollResponse> getAllPolls(UserPrincipal currentUser, int page, int size) {
+    public PagedResponse<ElectionResponse> getAllPolls(UserPrincipal currentUser, int page, int size) {
         validatePageNumberAndSize(page, size);
 
         // Retrieve Polls
@@ -64,7 +64,7 @@ public class PollService {
         Map<Long, Long> pollUserVoteMap = getPollUserVoteMap(currentUser, pollIds);
         Map<Long, User> creatorMap = getPollCreatorMap(polls.getContent());
 
-        List<PollResponse> pollResponses = polls.map(poll -> {
+        List<ElectionResponse> pollResponses = polls.map(poll -> {
             return ModelMapper.mapPollToPollResponse(poll,
                     choiceVoteCountMap,
                     creatorMap.get(poll.getCreatedBy()),
@@ -75,7 +75,7 @@ public class PollService {
                 polls.getSize(), polls.getTotalElements(), polls.getTotalPages(), polls.isLast());
     }
 
-    public PagedResponse<PollResponse> getPollsCreatedBy(String username, UserPrincipal currentUser, int page, int size) {
+    public PagedResponse<ElectionResponse> getPollsCreatedBy(String username, UserPrincipal currentUser, int page, int size) {
         validatePageNumberAndSize(page, size);
 
         User user = userRepository.findByUsername(username)
@@ -95,7 +95,7 @@ public class PollService {
         Map<Long, Long> choiceVoteCountMap = getChoiceVoteCountMap(pollIds);
         Map<Long, Long> pollUserVoteMap = getPollUserVoteMap(currentUser, pollIds);
 
-        List<PollResponse> pollResponses = polls.map(poll -> {
+        List<ElectionResponse> pollResponses = polls.map(poll -> {
             return ModelMapper.mapPollToPollResponse(poll,
                     choiceVoteCountMap,
                     user,
@@ -106,7 +106,7 @@ public class PollService {
                 polls.getSize(), polls.getTotalElements(), polls.getTotalPages(), polls.isLast());
     }
 
-    public PagedResponse<PollResponse> getPollsVotedBy(String username, UserPrincipal currentUser, int page, int size) {
+    public PagedResponse<ElectionResponse> getPollsVotedBy(String username, UserPrincipal currentUser, int page, int size) {
         validatePageNumberAndSize(page, size);
 
         User user = userRepository.findByUsername(username)
@@ -133,7 +133,7 @@ public class PollService {
         Map<Long, Long> pollUserVoteMap = getPollUserVoteMap(currentUser, pollIds);
         Map<Long, User> creatorMap = getPollCreatorMap(polls);
 
-        List<PollResponse> pollResponses = polls.stream().map(poll -> {
+        List<ElectionResponse> pollResponses = polls.stream().map(poll -> {
             return ModelMapper.mapPollToPollResponse(poll,
                     choiceVoteCountMap,
                     creatorMap.get(poll.getCreatedBy()),
@@ -144,7 +144,7 @@ public class PollService {
     }
 
 
-    public Poll createPoll(PollRequest pollRequest) {
+    public Poll createPoll(ElectionRequest pollRequest) {
         Poll poll = new Poll();
         poll.setQuestion(pollRequest.getQuestion());
 
@@ -161,7 +161,7 @@ public class PollService {
         return pollRepository.save(poll);
     }
 
-    public PollResponse getPollById(Long pollId, UserPrincipal currentUser) {
+    public ElectionResponse getPollById(Long pollId, UserPrincipal currentUser) {
         Poll poll = pollRepository.findById(pollId).orElseThrow(
                 () -> new ResourceNotFoundException("Poll", "id", pollId));
 
@@ -185,7 +185,7 @@ public class PollService {
                 creator, userVote != null ? userVote.getChoice().getId(): null);
     }
 
-    public PollResponse castVoteAndGetUpdatedPoll(Long pollId, VoteRequest voteRequest, UserPrincipal currentUser) {
+    public ElectionResponse castVoteAndGetUpdatedPoll(Long pollId, VoteRequest voteRequest, UserPrincipal currentUser) {
         Poll poll = pollRepository.findById(pollId)
                 .orElseThrow(() -> new ResourceNotFoundException("Poll", "id", pollId));
 

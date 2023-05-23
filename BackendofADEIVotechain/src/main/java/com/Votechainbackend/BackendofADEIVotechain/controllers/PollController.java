@@ -40,15 +40,15 @@ public class PollController {
     private static final Logger logger = LoggerFactory.getLogger(PollController.class);
 
     @GetMapping
-    public PagedResponse<PollResponse> getPolls(@CurrentUser UserPrincipal currentUser,
-                                                @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
-                                                @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
+    public PagedResponse<ElectionResponse> getPolls(@CurrentUser UserPrincipal currentUser,
+                                                    @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+                                                    @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
         return pollService.getAllPolls(currentUser, page, size);
     }
 
     @PostMapping
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> createPoll(@Valid @RequestBody PollRequest pollRequest) {
+    public ResponseEntity<?> createPoll(@Valid @RequestBody ElectionRequest pollRequest) {
         Poll poll = pollService.createPoll(pollRequest);
 
         URI location = ServletUriComponentsBuilder
@@ -60,16 +60,16 @@ public class PollController {
     }
 
     @GetMapping("/{pollId}")
-    public PollResponse getPollById(@CurrentUser UserPrincipal currentUser,
-                                    @PathVariable Long pollId) {
+    public ElectionResponse getPollById(@CurrentUser UserPrincipal currentUser,
+                                        @PathVariable Long pollId) {
         return pollService.getPollById(pollId, currentUser);
     }
 
     @PostMapping("/{pollId}/votes")
     @PreAuthorize("hasRole('USER')")
-    public PollResponse castVote(@CurrentUser UserPrincipal currentUser,
-                         @PathVariable Long pollId,
-                         @Valid @RequestBody VoteRequest voteRequest) {
+    public ElectionResponse castVote(@CurrentUser UserPrincipal currentUser,
+                                     @PathVariable Long pollId,
+                                     @Valid @RequestBody VoteRequest voteRequest) {
         return pollService.castVoteAndGetUpdatedPoll(pollId, voteRequest, currentUser);
     }
 

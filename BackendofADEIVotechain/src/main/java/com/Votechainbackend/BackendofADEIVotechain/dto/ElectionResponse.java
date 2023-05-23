@@ -5,17 +5,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.time.Instant;
 import java.util.List;
 
-public class PollResponse {
+public class ElectionResponse {
     private Long id;
-    private String question;
-    private List<ChoiceResponse> choices;
+    private String positiontitle;
+    private List<CandidateResponse> candidates;
     private UserSummary createdBy;
     private Instant creationDateTime;
     private Instant expirationDateTime;
     private Boolean isExpired;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Long selectedChoice;
+    private Long selectedCandidate;
     private Long totalVotes;
 
     public Long getId() {
@@ -26,20 +26,20 @@ public class PollResponse {
         this.id = id;
     }
 
-    public String getQuestion() {
-        return question;
+    public String getPositiontitle() {
+        return positiontitle;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
+    public void setPositiontitle(String positiontitle) {
+        this.positiontitle = positiontitle;
     }
 
-    public List<ChoiceResponse> getChoices() {
-        return choices;
+    public List<CandidateResponse> getCandidates() {
+        return candidates;
     }
 
-    public void setChoices(List<ChoiceResponse> choices) {
-        this.choices = choices;
+    public void setCandidates(List<CandidateResponse> candidates) {
+        this.candidates = candidates;
     }
 
     public UserSummary getCreatedBy() {
@@ -75,12 +75,12 @@ public class PollResponse {
         isExpired = expired;
     }
 
-    public Long getSelectedChoice() {
-        return selectedChoice;
+    public Long getSelectedCandidate() {
+        return selectedCandidate;
     }
 
-    public void setSelectedChoice(Long selectedChoice) {
-        this.selectedChoice = selectedChoice;
+    public void setSelectedCandidate(Long selectedCandidate) {
+        this.selectedCandidate = selectedCandidate;
     }
 
     public Long getTotalVotes() {

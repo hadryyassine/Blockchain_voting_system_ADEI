@@ -1,8 +1,8 @@
 package com.Votechainbackend.BackendofADEIVotechain.dto;
 
-public class ChoiceResponse {
+public class CandidateResponse {
     private long id;
-    private String text;
+    private String name;
     private long voteCount;
 
     public long getId() {
@@ -13,12 +13,12 @@ public class ChoiceResponse {
         this.id = id;
     }
 
-    public String getText() {
-        return text;
+    public String getName() {
+        return name;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public long getVoteCount() {
