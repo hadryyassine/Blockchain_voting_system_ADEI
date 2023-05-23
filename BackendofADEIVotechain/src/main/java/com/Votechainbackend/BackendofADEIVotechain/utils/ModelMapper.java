@@ -14,16 +14,16 @@ import java.util.stream.Collectors;
 
 public class ModelMapper {
 
-    public static ElectionResponse mapElectionToElectionResponse(Election candidate, Map<Long, Long> candidateVotesMap, User creator, Long userVote) {
-        ElectionResponse candidateResponse = new ElectionResponse();
-        candidateResponse.setId(candidate.getId());
-        candidateResponse.setPositiontitle(candidate.getPositiontitle());
-        candidateResponse.setCreationDateTime(candidate.getCreatedAt());
-        candidateResponse.setExpirationDateTime(candidate.getExpirationDateTime());
+    public static ElectionResponse mapElectionToElectionResponse(Election election, Map<Long, Long> candidateVotesMap, User creator, Long userVote) {
+        ElectionResponse electionResponse = new ElectionResponse();
+        electionResponse.setId(election.getId());
+        electionResponse.setPositiontitle(election.getPositiontitle());
+        electionResponse.setCreationDateTime(election.getCreatedAt());
+        electionResponse.setExpirationDateTime(election.getExpirationDateTime());
         Instant now = Instant.now();
-        candidateResponse.setExpired(candidate.getExpirationDateTime().isBefore(now));
+        electionResponse.setExpired(election.getExpirationDateTime().isBefore(now));
 
-        List<CandidateResponse> candidateResponses = candidate.getCandidates().stream().map(candidate -> {
+        List<CandidateResponse> candidateResponses = election.getCandidates().stream().map(candidate -> {
             CandidateResponse candidateResponse = new CandidateResponse();
             candidateResponse.setId(candidate.getId());
             candidateResponse.setName(candidate.getName());
@@ -36,18 +36,18 @@ public class ModelMapper {
             return candidateResponse;
         }).collect(Collectors.toList());
 
-        candidateResponse.setCandidates(candidateResponses);
+        electionResponse.setCandidates(candidateResponses);
         UserSummary creatorSummary = new UserSummary(creator.getId(), creator.getApogeecode(), creator.getName());
-        candidateResponse.setCreatedBy(creatorSummary);
+        electionResponse.setCreatedBy(creatorSummary);
 
         if(userVote != null) {
-            candidateResponse.setSelectedCandidate(userVote);
+            electionResponse.setSelectedCandidate(userVote);
         }
 
-        long totalVotes = candidateResponse.getCandidates().stream().mapToLong(CandidateResponse::getVoteCount).sum();
-        candidateResponse.setTotalVotes(totalVotes);
+        long totalVotes = electionResponse.getCandidates().stream().mapToLong(CandidateResponse::getVoteCount).sum();
+        electionResponse.setTotalVotes(totalVotes);
 
-        return candidateResponse;
+        return electionResponse;
     }
 
 }

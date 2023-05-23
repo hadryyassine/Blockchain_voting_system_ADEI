@@ -33,7 +33,7 @@ public class Election extends UserDateAudit {
     @Size(min = 2, max = 6)
     @Fetch(FetchMode.SELECT)
     @BatchSize(size = 30)
-    private List<Candidate> candidate = new ArrayList<>();
+    private List<Candidate> candidates = new ArrayList<>();
 
     @NotNull
     private Instant expirationDateTime;
@@ -55,11 +55,11 @@ public class Election extends UserDateAudit {
     }
 
     public List<Candidate> getCandidates() {
-        return candidate;
+        return candidates;
     }
 
     public void setCandidates(List<Candidate> candidate) {
-        this.candidate = candidate;
+        this.candidates = candidate;
     }
 
     public Instant getExpirationDateTime() {
@@ -71,12 +71,12 @@ public class Election extends UserDateAudit {
     }
 
     public void addCandidate(Candidate candidate) {
-        candidate.add(candidate);
+        candidates.add(candidate);
         candidate.setElection(this);
     }
 
     public void removeCandidate(Candidate candidate) {
-        candidate.remove(candidate);
+        candidates.remove(candidate);
         candidate.setElection(null);
     }
 }
