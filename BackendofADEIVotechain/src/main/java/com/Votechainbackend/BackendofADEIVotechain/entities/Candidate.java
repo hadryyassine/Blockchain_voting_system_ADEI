@@ -6,26 +6,26 @@ import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
-@Table(name = "choices")
-public class Choice {
+@Table(name = "candidate")
+public class Candidate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
     @Size(max = 40)
-    private String text;
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "poll_id", nullable = false)
-    private Poll poll;
+    @JoinColumn(name = "election_id", nullable = false)
+    private Election election;
 
-    public Choice() {
+    public Candidate() {
 
     }
 
-    public Choice(String text) {
-        this.text = text;
+    public Candidate(String name) {
+        this.name = name;
     }
 
     public Long getId() {
@@ -36,28 +36,28 @@ public class Choice {
         this.id = id;
     }
 
-    public String getText() {
-        return text;
+    public String getName() {
+        return name;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Poll getPoll() {
-        return poll;
+    public Election getElection() {
+        return election;
     }
 
-    public void setPoll(Poll poll) {
-        this.poll = poll;
+    public void setElection(Election election) {
+        this.election = election;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Choice choice = (Choice) o;
-        return Objects.equals(id, choice.id);
+        Candidate candidate = (Candidate) o;
+        return Objects.equals(id, candidate.id);
     }
 
     @Override
