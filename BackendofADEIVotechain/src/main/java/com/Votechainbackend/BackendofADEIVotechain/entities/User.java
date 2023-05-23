@@ -14,7 +14,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = {
-            "username"
+            "apogeecode"
         }),
         @UniqueConstraint(columnNames = {
             "email"
@@ -31,7 +31,7 @@ public class User extends DateAudit {
 
     @NotBlank
     @Size(max = 15)
-    private String username;
+    private String apogeecode;
 
     @NaturalId
     @NotBlank
@@ -53,9 +53,9 @@ public class User extends DateAudit {
 
     }
 
-    public User(String name, String username, String email, String password) {
+    public User(String name, String apogeecode, String email, String password) {
         this.name = name;
-        this.username = username;
+        this.apogeecode = apogeecode;
         this.email = email;
         this.password = password;
     }
@@ -68,12 +68,12 @@ public class User extends DateAudit {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getApogeecode() {
+        return apogeecode;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setApogeecode(String apogeecode) {
+        this.apogeecode = apogeecode;
     }
 
     public String getName() {

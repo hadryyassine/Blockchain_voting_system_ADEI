@@ -1,6 +1,6 @@
 package com.Votechainbackend.BackendofADEIVotechain.repositories;
 
-import com.Votechainbackend.BackendofADEIVotechain.entities.ChoiceVoteCount;
+import com.Votechainbackend.BackendofADEIVotechain.entities.CandidateVoteCount;
 import com.Votechainbackend.BackendofADEIVotechain.entities.Vote;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,22 +13,22 @@ import java.util.List;
 
 @Repository
 public interface VoteRepository extends JpaRepository<Vote, Long> {
-    @Query("SELECT NEW com.Votechainbackend.BackendofADEIVotechain.entities.ChoiceVoteCount(v.choice.id, count(v.id)) FROM Vote v WHERE v.poll.id in :pollIds GROUP BY v.choice.id")
-    List<ChoiceVoteCount> countByPollIdInGroupByChoiceId(@Param("pollIds") List<Long> pollIds);
+    @Query("SELECT NEW com.Votechainbackend.BackendofADEIVotechain.entities.CandidateVoteCount(v.candidate.id, count(v.id)) FROM Vote v WHERE v.election.id in :electionIds GROUP BY v.candidate.id")
+    List<CandidateVoteCount> countByElectionIdInGroupByCandidateId(@Param("electionIds") List<Long> electionIds);
 
-    @Query("SELECT NEW com.Votechainbackend.BackendofADEIVotechain.entities.ChoiceVoteCount(v.choice.id, count(v.id)) FROM Vote v WHERE v.poll.id = :pollId GROUP BY v.choice.id")
-    List<ChoiceVoteCount> countByPollIdGroupByChoiceId(@Param("pollId") Long pollId);
+    @Query("SELECT NEW com.Votechainbackend.BackendofADEIVotechain.entities.CandidateVoteCount(v.candidate.id, count(v.id)) FROM Vote v WHERE v.election.id = :electionId GROUP BY v.candidate.id")
+    List<CandidateVoteCount> countByElectionIdGroupByCandidateId(@Param("electionId") Long electionId);
 
-    @Query("SELECT v FROM Vote v where v.user.id = :userId and v.poll.id in :pollIds")
-    List<Vote> findByUserIdAndPollIdIn(@Param("userId") Long userId, @Param("pollIds") List<Long> pollIds);
+    @Query("SELECT v FROM Vote v where v.user.id = :userId and v.election.id in :electionIds")
+    List<Vote> findByUserIdAndElectionIdIn(@Param("userId") Long userId, @Param("electionIds") List<Long> electionIds);
 
-    @Query("SELECT v FROM Vote v where v.user.id = :userId and v.poll.id = :pollId")
-    Vote findByUserIdAndPollId(@Param("userId") Long userId, @Param("pollId") Long pollId);
+    @Query("SELECT v FROM Vote v where v.user.id = :userId and v.election.id = :electionId")
+    Vote findByUserIdAndElectionId(@Param("userId") Long userId, @Param("electionId") Long electionId);
 
     @Query("SELECT COUNT(v.id) from Vote v where v.user.id = :userId")
     long countByUserId(@Param("userId") Long userId);
 
-    @Query("SELECT v.poll.id FROM Vote v WHERE v.user.id = :userId")
-    Page<Long> findVotedPollIdsByUserId(@Param("userId") Long userId, Pageable pageable);
+    @Query("SELECT v.election.id FROM Vote v WHERE v.user.id = :userId")
+    Page<Long> findVotedElectionIdsByUserId(@Param("userId") Long userId, Pageable pageable);
 }
 

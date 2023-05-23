@@ -2,13 +2,13 @@ package com.Votechainbackend.BackendofADEIVotechain.controllers;
 
 
 import com.Votechainbackend.BackendofADEIVotechain.dto.*;
-import com.Votechainbackend.BackendofADEIVotechain.entities.Poll;
-import com.Votechainbackend.BackendofADEIVotechain.repositories.PollRepository;
+import com.Votechainbackend.BackendofADEIVotechain.entities.Election;
+import com.Votechainbackend.BackendofADEIVotechain.repositories.ElectionRepository;
 import com.Votechainbackend.BackendofADEIVotechain.repositories.UserRepository;
 import com.Votechainbackend.BackendofADEIVotechain.repositories.VoteRepository;
 import com.Votechainbackend.BackendofADEIVotechain.security.CurrentUser;
 import com.Votechainbackend.BackendofADEIVotechain.security.UserPrincipal;
-import com.Votechainbackend.BackendofADEIVotechain.services.PollService;
+import com.Votechainbackend.BackendofADEIVotechain.services.ElectionService;
 import com.Votechainbackend.BackendofADEIVotechain.utils.AppConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,11 +22,11 @@ import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/api/polls")
-public class PollController {
+@RequestMapping("/api/elections")
+public class ElectionController {
 
     @Autowired
-    private PollRepository pollRepository;
+    private ElectionRepository electionRepository;
 
     @Autowired
     private VoteRepository voteRepository;
@@ -35,42 +35,42 @@ public class PollController {
     private UserRepository userRepository;
 
     @Autowired
-    private PollService pollService;
+    private ElectionService electionService;
 
-    private static final Logger logger = LoggerFactory.getLogger(PollController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ElectionController.class);
 
     @GetMapping
-    public PagedResponse<PollResponse> getPolls(@CurrentUser UserPrincipal currentUser,
+    public PagedResponse<ElectionResponse> getElections(@CurrentUser UserPrincipal currentUser,
                                                 @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
                                                 @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
-        return pollService.getAllPolls(currentUser, page, size);
+        return electionService.getAllElections(currentUser, page, size);
     }
 
     @PostMapping
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> createPoll(@Valid @RequestBody PollRequest pollRequest) {
-        Poll poll = pollService.createPoll(pollRequest);
+    public ResponseEntity<?> createElection(@Valid @RequestBody ElectionRequest electionRequest) {
+        Election election = electionService.createElection(electionRequest);
 
         URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{pollId}")
-                .buildAndExpand(poll.getId()).toUri();
+                .fromCurrentRequest().path("/{electionId}")
+                .buildAndExpand(election.getId()).toUri();
 
         return ResponseEntity.created(location)
-                .body(new ApiResponse(true, "Poll Created Successfully"));
+                .body(new ApiResponse(true, "Election Created Successfully"));
     }
 
-    @GetMapping("/{pollId}")
-    public PollResponse getPollById(@CurrentUser UserPrincipal currentUser,
-                                    @PathVariable Long pollId) {
-        return pollService.getPollById(pollId, currentUser);
+    @GetMapping("/{electionId}")
+    public ElectionResponse getElectionById(@CurrentUser UserPrincipal currentUser,
+                                    @PathVariable Long electionId) {
+        return electionService.getElectionById(electionId, currentUser);
     }
 
-    @PostMapping("/{pollId}/votes")
+    @PostMapping("/{electionId}/votes")
     @PreAuthorize("hasRole('USER')")
-    public PollResponse castVote(@CurrentUser UserPrincipal currentUser,
-                         @PathVariable Long pollId,
+    public ElectionResponse castVote(@CurrentUser UserPrincipal currentUser,
+                         @PathVariable Long electionId,
                          @Valid @RequestBody VoteRequest voteRequest) {
-        return pollService.castVoteAndGetUpdatedPoll(pollId, voteRequest, currentUser);
+        return electionService.castVoteAndGetUpdatedElection(electionId, voteRequest, currentUser);
     }
 
 }
