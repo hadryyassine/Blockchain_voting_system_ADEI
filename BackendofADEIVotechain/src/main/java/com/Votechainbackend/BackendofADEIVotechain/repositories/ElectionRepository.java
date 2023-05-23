@@ -1,6 +1,6 @@
 package com.Votechainbackend.BackendofADEIVotechain.repositories;
 
-import com.Votechainbackend.BackendofADEIVotechain.entities.Poll;
+import com.Votechainbackend.BackendofADEIVotechain.entities.Election;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -11,15 +11,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PollRepository extends JpaRepository<Poll, Long> {
+public interface ElectionRepository extends JpaRepository<Election, Long> {
 
-    Optional<Poll> findById(Long pollId);
+    Optional<Election> findById(Long electionId);
 
-    Page<Poll> findByCreatedBy(Long userId, Pageable pageable);
+    Page<Election> findByCreatedBy(Long userId, Pageable pageable);
 
     long countByCreatedBy(Long userId);
 
-    List<Poll> findByIdIn(List<Long> pollIds);
+    List<Election> findByIdIn(List<Long> electionIds);
 
-    List<Poll> findByIdIn(List<Long> pollIds, Sort sort);
+    List<Election> findByIdIn(List<Long> electionIds, Sort sort);
 }

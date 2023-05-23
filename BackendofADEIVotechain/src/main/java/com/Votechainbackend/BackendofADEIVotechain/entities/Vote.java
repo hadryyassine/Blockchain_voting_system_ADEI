@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "votes", uniqueConstraints = {
         @UniqueConstraint(columnNames = {
-                "poll_id",
+                "election_id",
                 "user_id"
         })
 })
@@ -18,12 +18,12 @@ public class Vote extends DateAudit {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "poll_id", nullable = false)
-    private Poll poll;
+    @JoinColumn(name = "election_id", nullable = false)
+    private Election election;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "choice_id", nullable = false)
-    private Choice choice;
+    @JoinColumn(name = "candidate_id", nullable = false)
+    private Candidate candidate;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
@@ -37,20 +37,20 @@ public class Vote extends DateAudit {
         this.id = id;
     }
 
-    public Poll getPoll() {
-        return poll;
+    public Election getElection() {
+        return election;
     }
 
-    public void setPoll(Poll poll) {
-        this.poll = poll;
+    public void setElection(Election election) {
+        this.election = election;
     }
 
-    public Choice getChoice() {
-        return choice;
+    public Candidate getCandidate() {
+        return candidate;
     }
 
-    public void setChoice(Choice choice) {
-        this.choice = choice;
+    public void setCandidate(Candidate candidate) {
+        this.candidate = candidate;
     }
 
     public User getUser() {

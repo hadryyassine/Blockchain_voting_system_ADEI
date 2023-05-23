@@ -4,12 +4,12 @@ import com.Votechainbackend.BackendofADEIVotechain.dto.*;
 
 import com.Votechainbackend.BackendofADEIVotechain.entities.User;
 import com.Votechainbackend.BackendofADEIVotechain.exceptions.ResourceNotFoundException;
-import com.Votechainbackend.BackendofADEIVotechain.repositories.PollRepository;
+import com.Votechainbackend.BackendofADEIVotechain.repositories.ElectionRepository;
 import com.Votechainbackend.BackendofADEIVotechain.repositories.UserRepository;
 import com.Votechainbackend.BackendofADEIVotechain.repositories.VoteRepository;
 import com.Votechainbackend.BackendofADEIVotechain.security.CurrentUser;
 import com.Votechainbackend.BackendofADEIVotechain.security.UserPrincipal;
-import com.Votechainbackend.BackendofADEIVotechain.services.PollService;
+import com.Votechainbackend.BackendofADEIVotechain.services.ElectionService;
 import com.Votechainbackend.BackendofADEIVotechain.utils.AppConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,13 +25,13 @@ public class UserController {
     private UserRepository userRepository;
 
     @Autowired
-    private PollRepository pollRepository;
+    private ElectionRepository electionRepository;
 
     @Autowired
     private VoteRepository voteRepository;
 
     @Autowired
-    private PollService pollService;
+    private ElectionService electionService;
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -42,9 +42,9 @@ public class UserController {
         return userSummary;
     }
 
-    @GetMapping("/user/checkUsernameAvailability")
-    public UserIdentityAvailability checkUsernameAvailability(@RequestParam(value = "username") String username) {
-        Boolean isAvailable = !userRepository.existsByUsername(username);
+    @GetMapping("/user/checkApogeecodeAvailability")
+    public UserIdentityAvailability checkApogeecodeAvailability(@RequestParam(value = "apogeecode") String apogeecode) {
+        Boolean isAvailable = !userRepository.existsByApogeecode(apogeecode);
         return new UserIdentityAvailability(isAvailable);
     }
 
@@ -54,33 +54,33 @@ public class UserController {
         return new UserIdentityAvailability(isAvailable);
     }
 
-    @GetMapping("/users/{username}")
-    public UserProfile getUserProfile(@PathVariable(value = "username") String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
+    @GetMapping("/users/{apogeecode}")
+    public UserProfile getUserProfile(@PathVariable(value = "apogeecode") String apogeecode) {
+        User user = userRepository.findByApogeecode(apogeecode)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "apogeecode", apogeecode));
 
-        long pollCount = pollRepository.countByCreatedBy(user.getId());
+        long electionCount = electionRepository.countByCreatedBy(user.getId());
         long voteCount = voteRepository.countByUserId(user.getId());
 
-        UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(), user.getName(), user.getCreatedAt(), pollCount, voteCount);
+        UserProfile userProfile = new UserProfile(user.getId(), user.getApogeecode(), user.getName(), user.getCreatedAt(), electionCount, voteCount);
 
         return userProfile;
     }
 
-    @GetMapping("/users/{username}/polls")
-    public PagedResponse<ElectionResponse> getPollsCreatedBy(@PathVariable(value = "username") String username,
-                                                             @CurrentUser UserPrincipal currentUser,
-                                                             @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
-                                                             @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
-        return pollService.getPollsCreatedBy(username, currentUser, page, size);
+    @GetMapping("/users/{apogeecode}/elections")
+    public PagedResponse<ElectionResponse> getElectionsCreatedBy(@PathVariable(value = "apogeecode") String apogeecode,
+                                                         @CurrentUser UserPrincipal currentUser,
+                                                         @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+                                                         @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
+        return electionService.getElectionsCreatedBy(apogeecode, currentUser, page, size);
     }
 
-    @GetMapping("/users/{username}/votes")
-    public PagedResponse<ElectionResponse> getPollsVotedBy(@PathVariable(value = "username") String username,
-                                                           @CurrentUser UserPrincipal currentUser,
-                                                           @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
-                                                           @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
-        return pollService.getPollsVotedBy(username, currentUser, page, size);
+    @GetMapping("/users/{apogeecode}/votes")
+    public PagedResponse<ElectionResponse> getElectionsVotedBy(@PathVariable(value = "apogeecode") String apogeecode,
+                                                       @CurrentUser UserPrincipal currentUser,
+                                                       @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+                                                       @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
+        return electionService.getElectionsVotedBy(apogeecode, currentUser, page, size);
     }
 
 }

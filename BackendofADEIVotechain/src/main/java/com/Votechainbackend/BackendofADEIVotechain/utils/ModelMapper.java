@@ -4,7 +4,7 @@ package com.Votechainbackend.BackendofADEIVotechain.utils;
 import com.Votechainbackend.BackendofADEIVotechain.dto.CandidateResponse;
 import com.Votechainbackend.BackendofADEIVotechain.dto.ElectionResponse;
 import com.Votechainbackend.BackendofADEIVotechain.dto.UserSummary;
-import com.Votechainbackend.BackendofADEIVotechain.entities.Poll;
+import com.Votechainbackend.BackendofADEIVotechain.entities.Election;
 import com.Votechainbackend.BackendofADEIVotechain.entities.User;
 
 import java.time.Instant;
@@ -14,40 +14,40 @@ import java.util.stream.Collectors;
 
 public class ModelMapper {
 
-    public static ElectionResponse mapPollToPollResponse(Poll poll, Map<Long, Long> choiceVotesMap, User creator, Long userVote) {
-        ElectionResponse pollResponse = new ElectionResponse();
-        pollResponse.setId(poll.getId());
-        pollResponse.setQuestion(poll.getQuestion());
-        pollResponse.setCreationDateTime(poll.getCreatedAt());
-        pollResponse.setExpirationDateTime(poll.getExpirationDateTime());
+    public static ElectionResponse mapElectionToElectionResponse(Election candidate, Map<Long, Long> candidateVotesMap, User creator, Long userVote) {
+        ElectionResponse candidateResponse = new ElectionResponse();
+        candidateResponse.setId(candidate.getId());
+        candidateResponse.setPositiontitle(candidate.getPositiontitle());
+        candidateResponse.setCreationDateTime(candidate.getCreatedAt());
+        candidateResponse.setExpirationDateTime(candidate.getExpirationDateTime());
         Instant now = Instant.now();
-        pollResponse.setExpired(poll.getExpirationDateTime().isBefore(now));
+        candidateResponse.setExpired(candidate.getExpirationDateTime().isBefore(now));
 
-        List<CandidateResponse> choiceResponses = poll.getChoices().stream().map(choice -> {
-            CandidateResponse choiceResponse = new CandidateResponse();
-            choiceResponse.setId(choice.getId());
-            choiceResponse.setText(choice.getText());
+        List<CandidateResponse> candidateResponses = candidate.getCandidates().stream().map(candidate -> {
+            CandidateResponse candidateResponse = new CandidateResponse();
+            candidateResponse.setId(candidate.getId());
+            candidateResponse.setName(candidate.getName());
 
-            if(choiceVotesMap.containsKey(choice.getId())) {
-                choiceResponse.setVoteCount(choiceVotesMap.get(choice.getId()));
+            if(candidateVotesMap.containsKey(candidate.getId())) {
+                candidateResponse.setVoteCount(candidateVotesMap.get(candidate.getId()));
             } else {
-                choiceResponse.setVoteCount(0);
+                candidateResponse.setVoteCount(0);
             }
-            return choiceResponse;
+            return candidateResponse;
         }).collect(Collectors.toList());
 
-        pollResponse.setChoices(choiceResponses);
-        UserSummary creatorSummary = new UserSummary(creator.getId(), creator.getUsername(), creator.getName());
-        pollResponse.setCreatedBy(creatorSummary);
+        candidateResponse.setCandidates(candidateResponses);
+        UserSummary creatorSummary = new UserSummary(creator.getId(), creator.getApogeecode(), creator.getName());
+        candidateResponse.setCreatedBy(creatorSummary);
 
         if(userVote != null) {
-            pollResponse.setSelectedChoice(userVote);
+            candidateResponse.setSelectedCandidate(userVote);
         }
 
-        long totalVotes = pollResponse.getChoices().stream().mapToLong(CandidateResponse::getVoteCount).sum();
-        pollResponse.setTotalVotes(totalVotes);
+        long totalVotes = candidateResponse.getCandidates().stream().mapToLong(CandidateResponse::getVoteCount).sum();
+        candidateResponse.setTotalVotes(totalVotes);
 
-        return pollResponse;
+        return candidateResponse;
     }
 
 }

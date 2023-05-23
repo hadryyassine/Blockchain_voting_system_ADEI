@@ -14,18 +14,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "polls")
-public class Poll extends UserDateAudit {
+@Table(name = "election")
+public class Election extends UserDateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
     @Size(max = 140)
-    private String question;
+    private String positiontitle;
 
     @OneToMany(
-            mappedBy = "poll",
+            mappedBy = "election",
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER,
             orphanRemoval = true
@@ -33,7 +33,7 @@ public class Poll extends UserDateAudit {
     @Size(min = 2, max = 6)
     @Fetch(FetchMode.SELECT)
     @BatchSize(size = 30)
-    private List<Choice> choices = new ArrayList<>();
+    private List<Candidate> candidate = new ArrayList<>();
 
     @NotNull
     private Instant expirationDateTime;
@@ -46,20 +46,20 @@ public class Poll extends UserDateAudit {
         this.id = id;
     }
 
-    public String getQuestion() {
-        return question;
+    public String getPositiontitle() {
+        return positiontitle;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
+    public void setPositiontitle(String positiontitle) {
+        this.positiontitle = positiontitle;
     }
 
-    public List<Choice> getChoices() {
-        return choices;
+    public List<Candidate> getCandidates() {
+        return candidate;
     }
 
-    public void setChoices(List<Choice> choices) {
-        this.choices = choices;
+    public void setCandidates(List<Candidate> candidate) {
+        this.candidate = candidate;
     }
 
     public Instant getExpirationDateTime() {
@@ -70,13 +70,13 @@ public class Poll extends UserDateAudit {
         this.expirationDateTime = expirationDateTime;
     }
 
-    public void addChoice(Choice choice) {
-        choices.add(choice);
-        choice.setPoll(this);
+    public void addCandidate(Candidate candidate) {
+        candidate.add(candidate);
+        candidate.setElection(this);
     }
 
-    public void removeChoice(Choice choice) {
-        choices.remove(choice);
-        choice.setPoll(null);
+    public void removeCandidate(Candidate candidate) {
+        candidate.remove(candidate);
+        candidate.setElection(null);
     }
 }
