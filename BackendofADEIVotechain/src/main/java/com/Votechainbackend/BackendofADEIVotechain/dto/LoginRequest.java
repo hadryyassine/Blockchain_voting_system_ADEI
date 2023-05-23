@@ -1,22 +1,22 @@
 package com.Votechainbackend.BackendofADEIVotechain.dto;
 
-
+import javax.validation.constraints.NotBlank;
 
 public class LoginRequest {
-    private String emailAdress;
+    @NotBlank
+    private String usernameOrEmail;
 
-
-
+    @NotBlank
     private String password;
 
-
-    public String getEmailAdress() {
-        return emailAdress;
+    public String getUsernameOrEmail() {
+        return usernameOrEmail;
     }
 
-    public void setEmailAdress(String emailAdress) {
-        this.emailAdress = emailAdress;
+    public void setUsernameOrEmail(String usernameOrEmail) {
+        this.usernameOrEmail = usernameOrEmail;
     }
+
     public String getPassword() {
         return password;
     }
