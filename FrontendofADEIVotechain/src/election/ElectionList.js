@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
-import { getAllPolls, getUserCreatedPolls, getUserVotedPolls } from '../util/APIUtils';
-import Poll from './Poll';
+import { getAllElections, getUserCreatedElections, getUserVotedElections } from '../util/APIUtils';
+import Election from './Election';
 import { castVote } from '../util/APIUtils';
 import LoadingIndicator  from '../common/LoadingIndicator';
 import { Button, Icon, notification } from 'antd';
-import { POLL_LIST_SIZE } from '../constants';
+import { ELECTION_LIST_SIZE } from '../constants';
 import { withRouter } from 'react-router-dom';
-import './PollList.css';
+import './ElectionList.css';
 
-class PollList extends Component {
+class ElectionList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            polls: [],
+            elections: [],
             page: 0,
             size: 10,
             totalElements: 0,
@@ -21,20 +21,20 @@ class PollList extends Component {
             currentVotes: [],
             isLoading: false
         };
-        this.loadPollList = this.loadPollList.bind(this);
+        this.loadElectionList = this.loadElectionList.bind(this);
         this.handleLoadMore = this.handleLoadMore.bind(this);
     }
 
-    loadPollList(page = 0, size = POLL_LIST_SIZE) {
+    loadElectionList(page = 0, size = ELECTION_LIST_SIZE) {
         let promise;
-        if(this.props.username) {
-            if(this.props.type === 'USER_CREATED_POLLS') {
-                promise = getUserCreatedPolls(this.props.username, page, size);
-            } else if (this.props.type === 'USER_VOTED_POLLS') {
-                promise = getUserVotedPolls(this.props.username, page, size);                               
+        if(this.props.apogeecode) {
+            if(this.props.type === 'USER_CREATED_ELECTIONS') {
+                promise = getUserCreatedElections(this.props.apogeecode, page, size);
+            } else if (this.props.type === 'USER_VOTED_ELECTIONS') {
+                promise = getUserVotedElections(this.props.apogeecode, page, size);                               
             }
         } else {
-            promise = getAllPolls(page, size);
+            promise = getAllElections(page, size);
         }
 
         if(!promise) {
@@ -47,11 +47,11 @@ class PollList extends Component {
 
         promise            
         .then(response => {
-            const polls = this.state.polls.slice();
+            const elections = this.state.elections.slice();
             const currentVotes = this.state.currentVotes.slice();
 
             this.setState({
-                polls: polls.concat(response.content),
+                elections: elections.concat(response.content),
                 page: response.page,
                 size: response.size,
                 totalElements: response.totalElements,
@@ -69,14 +69,14 @@ class PollList extends Component {
     }
 
     componentDidMount() {
-        this.loadPollList();
+        this.loadElectionList();
     }
 
     componentDidUpdate(nextProps) {
         if(this.props.isAuthenticated !== nextProps.isAuthenticated) {
             // Reset State
             this.setState({
-                polls: [],
+                elections: [],
                 page: 0,
                 size: 10,
                 totalElements: 0,
@@ -85,17 +85,17 @@ class PollList extends Component {
                 currentVotes: [],
                 isLoading: false
             });    
-            this.loadPollList();
+            this.loadElectionList();
         }
     }
 
     handleLoadMore() {
-        this.loadPollList(this.state.page + 1);
+        this.loadElectionList(this.state.page + 1);
     }
 
-    handleVoteChange(event, pollIndex) {
+    handleVoteChange(event, electionIndex) {
         const currentVotes = this.state.currentVotes.slice();
-        currentVotes[pollIndex] = event.target.value;
+        currentVotes[electionIndex] = event.target.value;
 
         this.setState({
             currentVotes: currentVotes
@@ -103,38 +103,38 @@ class PollList extends Component {
     }
 
 
-    handleVoteSubmit(event, pollIndex) {
+    handleVoteSubmit(event, electionIndex) {
         event.preventDefault();
         if(!this.props.isAuthenticated) {
             this.props.history.push("/login");
             notification.info({
-                message: 'Polling App',
+                message: 'Electioning App',
                 description: "Please login to vote.",          
             });
             return;
         }
 
-        const poll = this.state.polls[pollIndex];
-        const selectedChoice = this.state.currentVotes[pollIndex];
+        const election = this.state.elections[electionIndex];
+        const selectedCandidate = this.state.currentVotes[electionIndex];
 
         const voteData = {
-            pollId: poll.id,
-            choiceId: selectedChoice
+            electionId: election.id,
+            candidateId: selectedCandidate
         };
 
         castVote(voteData)
         .then(response => {
-            const polls = this.state.polls.slice();
-            polls[pollIndex] = response;
+            const elections = this.state.elections.slice();
+            elections[electionIndex] = response;
             this.setState({
-                polls: polls
+                elections: elections
             });        
         }).catch(error => {
             if(error.status === 401) {
                 this.props.handleLogout('/login', 'error', 'You have been logged out. Please login to vote');    
             } else {
                 notification.error({
-                    message: 'Polling App',
+                    message: 'Electioning App',
                     description: error.message || 'Sorry! Something went wrong. Please try again!'
                 });                
             }
@@ -142,29 +142,29 @@ class PollList extends Component {
     }
 
     render() {
-        const pollViews = [];
-        this.state.polls.forEach((poll, pollIndex) => {
-            pollViews.push(<Poll 
-                key={poll.id} 
-                poll={poll}
-                currentVote={this.state.currentVotes[pollIndex]} 
-                handleVoteChange={(event) => this.handleVoteChange(event, pollIndex)}
-                handleVoteSubmit={(event) => this.handleVoteSubmit(event, pollIndex)} />)            
+        const electionViews = [];
+        this.state.elections.forEach((election, electionIndex) => {
+            electionViews.push(<Election 
+                key={election.id} 
+                election={election}
+                currentVote={this.state.currentVotes[electionIndex]} 
+                handleVoteChange={(event) => this.handleVoteChange(event, electionIndex)}
+                handleVoteSubmit={(event) => this.handleVoteSubmit(event, electionIndex)} />)            
         });
 
         return (
-            <div className="polls-container">
-                {pollViews}
+            <div className="elections-container">
+                {electionViews}
                 {
-                    !this.state.isLoading && this.state.polls.length === 0 ? (
-                        <div className="no-polls-found">
-                            <span>No Polls Found.</span>
+                    !this.state.isLoading && this.state.elections.length === 0 ? (
+                        <div className="no-elections-found">
+                            <span>No Elections Found.</span>
                         </div>    
                     ): null
                 }  
                 {
                     !this.state.isLoading && !this.state.last ? (
-                        <div className="load-more-polls"> 
+                        <div className="load-more-elections"> 
                             <Button type="dashed" onClick={this.handleLoadMore} disabled={this.state.isLoading}>
                                 <Icon type="plus" /> Load more
                             </Button>
@@ -179,4 +179,4 @@ class PollList extends Component {
     }
 }
 
-export default withRouter(PollList);
+export default withRouter(ElectionList);

@@ -48,7 +48,7 @@
     color: rgba(0,0,0,0.85);
   }
   
-  .profile-menu .username-info {
+  .profile-menu .apogeecode-info {
     font-size: 14px;
     color: rgba(0,0,0,0.65);
   }
@@ -66,7 +66,7 @@
     font-size: 20px;
   }
 
-  .poll-icon {
+  .election-icon {
     margin-top: -4px;
   }
 

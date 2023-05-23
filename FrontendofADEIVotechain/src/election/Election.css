@@ -11,7 +11,7 @@
     box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
 }
 
-.poll-question {
+.poll-positiontitle {
     font-weight: 500;
     font-size: 21px;
     color: rgba(0, 0, 0, 0.85);
@@ -19,7 +19,7 @@
 }
 
 @media (max-width: 768px) {
-    .poll-question {
+    .poll-positiontitle {
         font-size: 18px;
     }
 }
@@ -96,7 +96,7 @@
     color: rgba(0, 0, 0, 0.75);
 }
 
-.cv-choice-text {
+.cv-choice-name {
     margin-left: 10px;
     display: inline-block;
     vertical-align: bottom;
@@ -169,7 +169,7 @@
     margin-right: 8px;
 }
 
-.poll-creator-username {
+.poll-creator-apogeecode {
     color: #657786;
     font-size: 15px;
     display: inline-block;  

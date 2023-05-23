@@ -1,4 +1,4 @@
-import { API_BASE_URL, POLL_LIST_SIZE, ACCESS_TOKEN } from '../constants';
+import { API_BASE_URL, ELECTION_LIST_SIZE, ACCESS_TOKEN } from '../constants';
 
 const request = (options) => {
     const headers = new Headers({
@@ -23,27 +23,27 @@ const request = (options) => {
     );
 };
 
-export function getAllPolls(page, size) {
+export function getAllElections(page, size) {
     page = page || 0;
-    size = size || POLL_LIST_SIZE;
+    size = size || ELECTION_LIST_SIZE;
 
     return request({
-        url: API_BASE_URL + "/polls?page=" + page + "&size=" + size,
+        url: API_BASE_URL + "/elections?page=" + page + "&size=" + size,
         method: 'GET'
     });
 }
 
-export function createPoll(pollData) {
+export function createElection(electionData) {
     return request({
-        url: API_BASE_URL + "/polls",
+        url: API_BASE_URL + "/elections",
         method: 'POST',
-        body: JSON.stringify(pollData)         
+        body: JSON.stringify(electionData)         
     });
 }
 
 export function castVote(voteData) {
     return request({
-        url: API_BASE_URL + "/polls/" + voteData.pollId + "/votes",
+        url: API_BASE_URL + "/elections/" + voteData.electionId + "/votes",
         method: 'POST',
         body: JSON.stringify(voteData)
     });
@@ -65,9 +65,9 @@ export function signup(signupRequest) {
     });
 }
 
-export function checkUsernameAvailability(username) {
+export function checkApogeecodeAvailability(apogeecode) {
     return request({
-        url: API_BASE_URL + "/user/checkUsernameAvailability?username=" + username,
+        url: API_BASE_URL + "/user/checkApogeecodeAvailability?apogeecode=" + apogeecode,
         method: 'GET'
     });
 }
@@ -91,29 +91,29 @@ export function getCurrentUser() {
     });
 }
 
-export function getUserProfile(username) {
+export function getUserProfile(apogeecode) {
     return request({
-        url: API_BASE_URL + "/users/" + username,
+        url: API_BASE_URL + "/users/" + apogeecode,
         method: 'GET'
     });
 }
 
-export function getUserCreatedPolls(username, page, size) {
+export function getUserCreatedElections(apogeecode, page, size) {
     page = page || 0;
-    size = size || POLL_LIST_SIZE;
+    size = size || ELECTION_LIST_SIZE;
 
     return request({
-        url: API_BASE_URL + "/users/" + username + "/polls?page=" + page + "&size=" + size,
+        url: API_BASE_URL + "/users/" + apogeecode + "/elections?page=" + page + "&size=" + size,
         method: 'GET'
     });
 }
 
-export function getUserVotedPolls(username, page, size) {
+export function getUserVotedElections(apogeecode, page, size) {
     page = page || 0;
-    size = size || POLL_LIST_SIZE;
+    size = size || ELECTION_LIST_SIZE;
 
     return request({
-        url: API_BASE_URL + "/users/" + username + "/votes?page=" + page + "&size=" + size,
+        url: API_BASE_URL + "/users/" + apogeecode + "/votes?page=" + page + "&size=" + size,
         method: 'GET'
     });
 }

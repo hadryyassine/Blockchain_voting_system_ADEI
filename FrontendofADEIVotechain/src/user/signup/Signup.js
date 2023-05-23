@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { signup, checkUsernameAvailability, checkEmailAvailability } from '../../util/APIUtils';
+import { signup, checkApogeecodeAvailability, checkEmailAvailability } from '../../util/APIUtils';
 import './Signup.css';
 import { Link } from 'react-router-dom';
 import { 
@@ -19,7 +19,7 @@ class Signup extends Component {
             name: {
                 value: ''
             },
-            username: {
+            apogeecode: {
                 value: ''
             },
             email: {
@@ -31,7 +31,7 @@ class Signup extends Component {
         }
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.validateUsernameAvailability = this.validateUsernameAvailability.bind(this);
+        this.validateApogeecodeAvailability = this.validateApogeecodeAvailability.bind(this);
         this.validateEmailAvailability = this.validateEmailAvailability.bind(this);
         this.isFormInvalid = this.isFormInvalid.bind(this);
     }
@@ -55,7 +55,7 @@ class Signup extends Component {
         const signupRequest = {
             name: this.state.name.value,
             email: this.state.email.value,
-            username: this.state.username.value,
+            apogeecode: this.state.apogeecode.value,
             password: this.state.password.value
         };
         signup(signupRequest)
@@ -75,7 +75,7 @@ class Signup extends Component {
 
     isFormInvalid() {
         return !(this.state.name.validateStatus === 'success' &&
-            this.state.username.validateStatus === 'success' &&
+            this.state.apogeecode.validateStatus === 'success' &&
             this.state.email.validateStatus === 'success' &&
             this.state.password.validateStatus === 'success'
         );
@@ -99,18 +99,18 @@ class Signup extends Component {
                                 value={this.state.name.value} 
                                 onChange={(event) => this.handleInputChange(event, this.validateName)} />    
                         </FormItem>
-                        <FormItem label="Username"
+                        <FormItem label="Apogeecode"
                             hasFeedback
-                            validateStatus={this.state.username.validateStatus}
-                            help={this.state.username.errorMsg}>
+                            validateStatus={this.state.apogeecode.validateStatus}
+                            help={this.state.apogeecode.errorMsg}>
                             <Input 
                                 size="large"
-                                name="username" 
+                                name="apogeecode" 
                                 autoComplete="off"
-                                placeholder="A unique username"
-                                value={this.state.username.value} 
-                                onBlur={this.validateUsernameAvailability}
-                                onChange={(event) => this.handleInputChange(event, this.validateUsername)} />    
+                                placeholder="A unique apogeecode"
+                                value={this.state.apogeecode.value} 
+                                onBlur={this.validateApogeecodeAvailability}
+                                onChange={(event) => this.handleInputChange(event, this.validateApogeecode)} />    
                         </FormItem>
                         <FormItem 
                             label="Email"
@@ -204,16 +204,16 @@ class Signup extends Component {
         }
     }
 
-    validateUsername = (username) => {
-        if(username.length < USERNAME_MIN_LENGTH) {
+    validateApogeecode = (apogeecode) => {
+        if(apogeecode.length < USERNAME_MIN_LENGTH) {
             return {
                 validateStatus: 'error',
-                errorMsg: `Username is too short (Minimum ${USERNAME_MIN_LENGTH} characters needed.)`
+                errorMsg: `Apogeecode is too short (Minimum ${USERNAME_MIN_LENGTH} characters needed.)`
             }
-        } else if (username.length > USERNAME_MAX_LENGTH) {
+        } else if (apogeecode.length > USERNAME_MAX_LENGTH) {
             return {
                 validationStatus: 'error',
-                errorMsg: `Username is too long (Maximum ${USERNAME_MAX_LENGTH} characters allowed.)`
+                errorMsg: `Apogeecode is too long (Maximum ${USERNAME_MAX_LENGTH} characters allowed.)`
             }
         } else {
             return {
@@ -223,53 +223,53 @@ class Signup extends Component {
         }
     }
 
-    validateUsernameAvailability() {
-        // First check for client side errors in username
-        const usernameValue = this.state.username.value;
-        const usernameValidation = this.validateUsername(usernameValue);
+    validateApogeecodeAvailability() {
+        // First check for client side errors in apogeecode
+        const apogeecodeValue = this.state.apogeecode.value;
+        const apogeecodeValidation = this.validateApogeecode(apogeecodeValue);
 
-        if(usernameValidation.validateStatus === 'error') {
+        if(apogeecodeValidation.validateStatus === 'error') {
             this.setState({
-                username: {
-                    value: usernameValue,
-                    ...usernameValidation
+                apogeecode: {
+                    value: apogeecodeValue,
+                    ...apogeecodeValidation
                 }
             });
             return;
         }
 
         this.setState({
-            username: {
-                value: usernameValue,
+            apogeecode: {
+                value: apogeecodeValue,
                 validateStatus: 'validating',
                 errorMsg: null
             }
         });
 
-        checkUsernameAvailability(usernameValue)
+        checkApogeecodeAvailability(apogeecodeValue)
         .then(response => {
             if(response.available) {
                 this.setState({
-                    username: {
-                        value: usernameValue,
+                    apogeecode: {
+                        value: apogeecodeValue,
                         validateStatus: 'success',
                         errorMsg: null
                     }
                 });
             } else {
                 this.setState({
-                    username: {
-                        value: usernameValue,
+                    apogeecode: {
+                        value: apogeecodeValue,
                         validateStatus: 'error',
-                        errorMsg: 'This username is already taken'
+                        errorMsg: 'This apogeecode is already taken'
                     }
                 });
             }
         }).catch(error => {
             // Marking validateStatus as success, Form will be recchecked at server
             this.setState({
-                username: {
-                    value: usernameValue,
+                apogeecode: {
+                    value: apogeecodeValue,
                     validateStatus: 'success',
                     errorMsg: null
                 }
