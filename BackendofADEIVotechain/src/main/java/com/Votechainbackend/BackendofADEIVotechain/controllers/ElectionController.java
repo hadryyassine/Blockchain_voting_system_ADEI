@@ -40,6 +40,7 @@ public class ElectionController {
     private static final Logger logger = LoggerFactory.getLogger(ElectionController.class);
 
     @GetMapping
+    @PreAuthorize("isAuthenticated()")
     public PagedResponse<ElectionResponse> getElections(@CurrentUser UserPrincipal currentUser,
                                                 @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
                                                 @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
@@ -47,8 +48,9 @@ public class ElectionController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> createElection(@Valid @RequestBody ElectionRequest electionRequest) {
+
         Election election = electionService.createElection(electionRequest);
 
         URI location = ServletUriComponentsBuilder
