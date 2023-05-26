@@ -23,7 +23,7 @@ public class AuthIntegrationTest {
     @Test
     public void testUserRegistrationAndAuthentication() throws Exception {
         // User registration
-        String registrationRequest = "{\"name\":\"John Doe\",\"apogeecode\":\"92412023\",\"email\":\"john.doe73@example.com\",\"password\":\"password123\"}";
+        String registrationRequest = "{\"name\":\"John Doe\",\"apogeecode\":\"9242023\",\"email\":\"john.doe00@example.com\",\"password\":\"password123\"}";
         MvcResult registrationResult = mockMvc.perform(post("/api/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(registrationRequest))
@@ -31,7 +31,7 @@ public class AuthIntegrationTest {
                 .andReturn();
 
         // User authentication
-        String authenticationRequest = "{\"apogeecodeOrEmail\":\"john.doe73@example.com\",\"password\":\"password123\"}";
+        String authenticationRequest = "{\"apogeecodeOrEmail\":\"john.doe00@example.com\",\"password\":\"password123\"}";
         MvcResult authenticationResult = mockMvc.perform(post("/api/auth/signin")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(authenticationRequest))
