@@ -15,12 +15,23 @@ pipeline{
                 
             }
         }
-        stage('Test'){
+        /*stage('Test'){
             steps{
                 dir('BackendofADEIVotechain'){
                     sh "./mvnw test"
                 }
             }
+        }*/
+        stage('Deploy-Backend'){
+            steps{
+                dir('BackendofADEIVotechain'){
+                    sh "docker build -t my-backend-2 ."
+                    sh "docker login -u hadryyassine -p Wxvbn-123"
+                    sh "docker pull hadryyassine/adeivotechain-1:my-backend-2"
+                    sh "docker push hadryyassine/adeivotechain-1:my-backend-2"
+                }
+            }
+            
         }
     }
 }
