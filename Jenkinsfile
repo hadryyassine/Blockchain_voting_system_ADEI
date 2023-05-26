@@ -15,5 +15,12 @@ pipeline{
                 
             }
         }
+        stage('Test'){
+            steps{
+                dir('BackendofADEIVotechain'){
+                    sh "./mvnw test"
+                }
+            }
+        }
     }
 }
