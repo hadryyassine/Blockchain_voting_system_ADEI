@@ -8,8 +8,11 @@ pipeline{
         }
         stage('Build'){
             steps {
-                sh "chmod 777 ./mvnw"
-                sh "./mvnw clean install -DskipTests"
+                dir("BackendofADEIVotechain"){
+                    sh "chmod 777 ./mvnw"
+                    sh "./mvnw clean install -DskipTests"
+                }
+                
             }
         }
     }
