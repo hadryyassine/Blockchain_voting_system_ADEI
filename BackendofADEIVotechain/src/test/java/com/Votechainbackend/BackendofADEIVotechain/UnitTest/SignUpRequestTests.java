@@ -1,4 +1,4 @@
-package com.Votechainbackend.BackendofADEIVotechain;
+package com.Votechainbackend.BackendofADEIVotechain.UnitTest;
 
 import com.Votechainbackend.BackendofADEIVotechain.dto.SignUpRequest;
 import org.junit.jupiter.api.Test;

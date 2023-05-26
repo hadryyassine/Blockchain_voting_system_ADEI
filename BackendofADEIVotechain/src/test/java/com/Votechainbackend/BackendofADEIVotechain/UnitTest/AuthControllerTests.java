@@ -1,8 +1,7 @@
-package com.Votechainbackend.BackendofADEIVotechain;
+package com.Votechainbackend.BackendofADEIVotechain.UnitTest;
 
 import com.Votechainbackend.BackendofADEIVotechain.controllers.AuthController;
 import com.Votechainbackend.BackendofADEIVotechain.dto.ApiResponse;
-import com.Votechainbackend.BackendofADEIVotechain.dto.JwtAuthenticationResponse;
 import com.Votechainbackend.BackendofADEIVotechain.entities.Role;
 import com.Votechainbackend.BackendofADEIVotechain.entities.RoleName;
 import com.Votechainbackend.BackendofADEIVotechain.entities.User;
@@ -24,15 +23,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import javax.servlet.http.HttpServletRequest;
-import java.nio.file.AccessDeniedException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

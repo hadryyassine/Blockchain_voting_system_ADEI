@@ -20,5 +20,9 @@ public class CandidateRequest {
         this.name = name;
     }
 
+    public CandidateRequest() {
+
+    }
+
 
 }

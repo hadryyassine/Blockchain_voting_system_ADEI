@@ -1,32 +1,23 @@
-package com.Votechainbackend.BackendofADEIVotechain;
+package com.Votechainbackend.BackendofADEIVotechain.UnitTest;
 
 import com.Votechainbackend.BackendofADEIVotechain.dto.VoteRequest;
 import com.Votechainbackend.BackendofADEIVotechain.entities.*;
 import com.Votechainbackend.BackendofADEIVotechain.exceptions.BadRequestException;
 import com.Votechainbackend.BackendofADEIVotechain.exceptions.ResourceNotFoundException;
-import com.Votechainbackend.BackendofADEIVotechain.dto.CandidateResponse;
-import com.Votechainbackend.BackendofADEIVotechain.dto.ElectionResponse;
-import com.Votechainbackend.BackendofADEIVotechain.dto.UserSummary;
 import com.Votechainbackend.BackendofADEIVotechain.repositories.ElectionRepository;
 import com.Votechainbackend.BackendofADEIVotechain.repositories.VoteRepository;
 import com.Votechainbackend.BackendofADEIVotechain.repositories.UserRepository;
 import com.Votechainbackend.BackendofADEIVotechain.services.ElectionService;
-import com.Votechainbackend.BackendofADEIVotechain.utils.ModelMapper;
 import com.Votechainbackend.BackendofADEIVotechain.security.UserPrincipal;
-import com.Votechainbackend.BackendofADEIVotechain.utils.AppConstants;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.*;
-import org.springframework.security.core.userdetails.User;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.*;

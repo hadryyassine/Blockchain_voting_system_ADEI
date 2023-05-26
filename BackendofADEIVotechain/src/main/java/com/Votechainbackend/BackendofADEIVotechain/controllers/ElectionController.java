@@ -68,7 +68,7 @@ public class ElectionController {
     }
 
     @PostMapping("/{electionId}/votes")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER') || hasRole('ADMIN')")
     public ElectionResponse castVote(@CurrentUser UserPrincipal currentUser,
                          @PathVariable Long electionId,
                          @Valid @RequestBody VoteRequest voteRequest) {

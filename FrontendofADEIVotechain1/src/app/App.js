@@ -71,14 +71,14 @@ class App extends Component {
     this.props.history.push(redirectTo);
     
     notification[notificationType]({
-      message: 'Polling App',
+      message: 'ADEI Votechain',
       description: description,
     });
   }
 
   handleLogin() {
     notification.success({
-      message: 'Polling App',
+      message: 'ADEI Votechain App',
       description: "You're successfully logged in.",
     });
     this.loadCurrentUser();
