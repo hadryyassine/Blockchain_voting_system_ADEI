@@ -182,8 +182,9 @@ class NewPoll extends Component {
                             placeholder="Enter your positiontitle"
                             style = {{ fontSize: '16px' }} 
                             autosize={{ minRows: 3, maxRows: 6 }} 
-                            name = "positiontitile"
+                            name = "positiontitle"
                             value = {this.state.positiontitle.text}
+                            data-testid="positiontitle"
                             onChange = {this.handleQuestionChange} />
                         </FormItem>
                         {candidateViews}

@@ -49,7 +49,6 @@ public class ElectionService {
     public PagedResponse<ElectionResponse> getAllElections(UserPrincipal currentUser, int page, int size) {
         validatePageNumberAndSize(page, size);
 
-        // Retrieve Elections
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
         Page<Election> elections = electionRepository.findAll(pageable);
 
@@ -58,7 +57,6 @@ public class ElectionService {
                     elections.getSize(), elections.getTotalElements(), elections.getTotalPages(), elections.isLast());
         }
 
-        // Map Elections to ElectionResponses containing vote counts and election creator details
         List<Long> electionIds = elections.map(Election::getId).getContent();
         Map<Long, Long> candidateVoteCountMap = getCandidateVoteCountMap(electionIds);
         Map<Long, Long> electionUserVoteMap = getElectionUserVoteMap(currentUser, electionIds);
@@ -81,7 +79,6 @@ public class ElectionService {
         User user = userRepository.findByApogeecode(apogeecode)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "apogeecode", apogeecode));
 
-        // Retrieve all elections created by the given apogeecode
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
         Page<Election> elections = electionRepository.findByCreatedBy(user.getId(), pageable);
 
@@ -90,7 +87,6 @@ public class ElectionService {
                     elections.getSize(), elections.getTotalElements(), elections.getTotalPages(), elections.isLast());
         }
 
-        // Map Elections to ElectionResponses containing vote counts and election creator details
         List<Long> electionIds = elections.map(Election::getId).getContent();
         Map<Long, Long> candidateVoteCountMap = getCandidateVoteCountMap(electionIds);
         Map<Long, Long> electionUserVoteMap = getElectionUserVoteMap(currentUser, electionIds);
@@ -112,7 +108,6 @@ public class ElectionService {
         User user = userRepository.findByApogeecode(apogeecode)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "apogeecode", apogeecode));
 
-        // Retrieve all electionIds in which the given apogeecode has voted
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
         Page<Long> userVotedElectionIds = voteRepository.findVotedElectionIdsByUserId(user.getId(), pageable);
 
@@ -122,13 +117,11 @@ public class ElectionService {
                     userVotedElectionIds.getTotalPages(), userVotedElectionIds.isLast());
         }
 
-        // Retrieve all election details from the voted electionIds.
         List<Long> electionIds = userVotedElectionIds.getContent();
 
         Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
         List<Election> elections = electionRepository.findByIdIn(electionIds, sort);
 
-        // Map Elections to ElectionResponses containing vote counts and election creator details
         Map<Long, Long> candidateVoteCountMap = getCandidateVoteCountMap(electionIds);
         Map<Long, Long> electionUserVoteMap = getElectionUserVoteMap(currentUser, electionIds);
         Map<Long, User> creatorMap = getElectionCreatorMap(elections);
@@ -165,17 +158,14 @@ public class ElectionService {
         Election election = electionRepository.findById(electionId).orElseThrow(
                 () -> new ResourceNotFoundException("Election", "id", electionId));
 
-        // Retrieve Vote Counts of every candidate belonging to the current election
         List<CandidateVoteCount> votes = voteRepository.countByElectionIdGroupByCandidateId(electionId);
 
         Map<Long, Long> candidateVotesMap = votes.stream()
                 .collect(Collectors.toMap(CandidateVoteCount::getCandidateId, CandidateVoteCount::getVoteCount));
 
-        // Retrieve election creator details
         User creator = userRepository.findById(election.getCreatedBy())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", election.getCreatedBy()));
 
-        // Retrieve vote done by logged in user
         Vote userVote = null;
         if(currentUser != null) {
             userVote = voteRepository.findByUserIdAndElectionId(currentUser.getId(), electionId);
@@ -212,15 +202,12 @@ public class ElectionService {
             throw new BadRequestException("Sorry! You have already cast your vote in this election");
         }
 
-        //-- Vote Saved, Return the updated Election Response now --
 
-        // Retrieve Vote Counts of every candidate belonging to the current election
         List<CandidateVoteCount> votes = voteRepository.countByElectionIdGroupByCandidateId(electionId);
 
         Map<Long, Long> candidateVotesMap = votes.stream()
                 .collect(Collectors.toMap(CandidateVoteCount::getCandidateId, CandidateVoteCount::getVoteCount));
 
-        // Retrieve election creator details
         User creator = userRepository.findById(election.getCreatedBy())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", election.getCreatedBy()));
 
