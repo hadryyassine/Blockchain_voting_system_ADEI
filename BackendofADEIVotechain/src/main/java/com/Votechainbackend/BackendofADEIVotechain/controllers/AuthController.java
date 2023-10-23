@@ -1,133 +1,100 @@
 package com.Votechainbackend.BackendofADEIVotechain.controllers;
 
-import com.Votechainbackend.BackendofADEIVotechain.dto.JwtResponse;
+
+import com.Votechainbackend.BackendofADEIVotechain.dto.ApiResponse;
+import com.Votechainbackend.BackendofADEIVotechain.dto.JwtAuthenticationResponse;
 import com.Votechainbackend.BackendofADEIVotechain.dto.LoginRequest;
-import com.Votechainbackend.BackendofADEIVotechain.dto.MessageResponse;
-import com.Votechainbackend.BackendofADEIVotechain.dto.SignupRequest;
-import com.Votechainbackend.BackendofADEIVotechain.entities.*;
-import com.Votechainbackend.BackendofADEIVotechain.repositories.CandidateRepository;
+import com.Votechainbackend.BackendofADEIVotechain.dto.SignUpRequest;
+import com.Votechainbackend.BackendofADEIVotechain.entities.Role;
+import com.Votechainbackend.BackendofADEIVotechain.entities.RoleName;
+import com.Votechainbackend.BackendofADEIVotechain.entities.User;
+import com.Votechainbackend.BackendofADEIVotechain.exceptions.AppException;
 import com.Votechainbackend.BackendofADEIVotechain.repositories.RoleRepository;
 import com.Votechainbackend.BackendofADEIVotechain.repositories.UserRepository;
-import com.Votechainbackend.BackendofADEIVotechain.repositories.VoterRepository;
-import com.Votechainbackend.BackendofADEIVotechain.security.JwtUtils;
-import com.Votechainbackend.BackendofADEIVotechain.services.UserDetailsImpl;
+import com.Votechainbackend.BackendofADEIVotechain.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import javax.validation.Valid;
+import java.net.URI;
+import java.util.Collections;
 
-
-
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
     @Autowired
     AuthenticationManager authenticationManager;
 
     @Autowired
     UserRepository userRepository;
-    @Autowired
-    VoterRepository voterRepository;
-
-    @Autowired
-    CandidateRepository candidateRepository;
-
-
 
     @Autowired
     RoleRepository roleRepository;
 
     @Autowired
-    PasswordEncoder encoder;
+    PasswordEncoder passwordEncoder;
 
     @Autowired
-    JwtUtils jwtUtils;
+    JwtTokenProvider tokenProvider;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmailAdress(), loginRequest.getPassword()));
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getApogeecodeOrEmail(),
+                        loginRequest.getPassword()
+                )
+        );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                userDetails.getApogeeCode(),
-                roles));
+        String jwt = tokenProvider.generateToken(authentication);
+        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody SignupRequest signUpRequest) {
-        String emailRegex = "^[A-Za-z0-9+_.-]+@(?:(?:[a-z0-9-]+\\.)?[a-z]+\\.)?(um5\\.ac\\.ma|um5r\\.ac\\.ma)$";
-
-        if (userRepository.existsByEmailAddress(signUpRequest.getEmailAdress())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already taken!"));
-        } else if (!signUpRequest.getEmailAdress().matches(emailRegex)) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Invalid Email Domain. Please use @um5.ac.ma or @um5r.ac.ma"));
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+        if(userRepository.existsByApogeecode(signUpRequest.getApogeecode())) {
+            return new ResponseEntity(new ApiResponse(false, "Apogeecode is already taken!"),
+                    HttpStatus.BAD_REQUEST);
         }
 
-        if (userRepository.existsByApogeeCode(signUpRequest.getApogeeCode())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Apogee Code is already in use!"));
-        }
-        // Create new user's account
-
-
-        Set<Role> strRoles = signUpRequest.getRole();
-        Set<RoleE> roles = new HashSet<>();
-
-
-            strRoles.forEach(role -> {
-                    RoleE roleEntity = roleRepository.findByName(role)
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                    roles.add(roleEntity);
-                });
-
-
-        User user;
-        if (strRoles.contains(Role.VOTER)) {
-            user = new Voter(signUpRequest.getName(),signUpRequest.getEmailAdress(),
-                    signUpRequest.getApogeeCode(),
-                    encoder.encode(signUpRequest.getPassword()));
-        } else if (strRoles.contains(Role.CANDIDATE)) {
-            user = new Candidate(signUpRequest.getName(),signUpRequest.getEmailAdress(),
-                    signUpRequest.getApogeeCode(),
-                    encoder.encode(signUpRequest.getPassword()));
-        } else {
-            user = new User(signUpRequest.getName(),signUpRequest.getEmailAdress(),
-                    signUpRequest.getApogeeCode(),
-                    encoder.encode(signUpRequest.getPassword()));
+        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
+            return new ResponseEntity(new ApiResponse(false, "Email Address already in use!"),
+                    HttpStatus.BAD_REQUEST);
         }
 
+        // Creating user's account
+        User user = new User(signUpRequest.getName(), signUpRequest.getApogeecode(),
+                signUpRequest.getEmail(), signUpRequest.getPassword());
 
-        userRepository.save(user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
+        Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
+                .orElseThrow(() -> new AppException("User Role not set."));
 
+        user.setRoles(Collections.singleton(userRole));
 
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        User result = userRepository.save(user);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentContextPath().path("/users/{apogeecode}")
+                .buildAndExpand(result.getApogeecode()).toUri();
+
+        return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
     }
 }

@@ -1,36 +1,42 @@
 package com.Votechainbackend.BackendofADEIVotechain.entities;
 
+import com.Votechainbackend.BackendofADEIVotechain.entities.audit.UserDateAudit;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import java.util.Date;
-
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
-
 @Entity
-@Table(name = "elections")
-
-public class Election {
-
+@Table(name = "election")
+public class Election extends UserDateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
-    @Column(name = "year")
-    private int year;
-    @Column(name = "start_date")
 
-    private Date startDate;
+    @NotBlank
+    @Size(max = 140)
+    private String positiontitle;
 
-    @Column(name = "end_date")
+    @OneToMany(
+            mappedBy = "election",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            orphanRemoval = true
+    )
+    @Size(min = 2, max = 6)
+    @Fetch(FetchMode.SELECT)
+    @BatchSize(size = 30)
+    private List<Candidate> candidates = new ArrayList<>();
 
-    private Date endDate;
-
-    @Column(name = "is_open")
-    private boolean isOpen;
-
-
-    // Getters and setters
+    @NotNull
+    private Instant expirationDateTime;
 
     public Long getId() {
         return id;
@@ -40,51 +46,37 @@ public class Election {
         this.id = id;
     }
 
-    public int getYear() {
-        return year;
+    public String getPositiontitle() {
+        return positiontitle;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public void setPositiontitle(String positiontitle) {
+        this.positiontitle = positiontitle;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public List<Candidate> getCandidates() {
+        return candidates;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setCandidates(List<Candidate> candidate) {
+        this.candidates = candidate;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public Instant getExpirationDateTime() {
+        return expirationDateTime;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setExpirationDateTime(Instant expirationDateTime) {
+        this.expirationDateTime = expirationDateTime;
     }
 
-    public boolean isOpen() {
-        return isOpen;
+    public void addCandidate(Candidate candidate) {
+        candidates.add(candidate);
+        candidate.setElection(this);
     }
 
-    public void setOpen(boolean open) {
-        isOpen = open;
+    public void removeCandidate(Candidate candidate) {
+        candidates.remove(candidate);
+        candidate.setElection(null);
     }
-
-    public Election() {
-
-    }
-
-    public Election(Long id, int year, Date startDate, Date endDate, boolean isOpen) {
-        this.id = id;
-        this.year = year;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.isOpen = isOpen;
-    }
-
-
-
-
 }

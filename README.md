@@ -40,3 +40,4 @@ This repository contains the complete source code, documentation, and setup inst
 For any questions, issues, or contributions, please feel free to get in touch or create a GitHub issue. 🙋‍♂️
 
 We hope this election system will help ensure fair and transparent elections for the Association of Engineering Students at ENSIAS. 🤝
+

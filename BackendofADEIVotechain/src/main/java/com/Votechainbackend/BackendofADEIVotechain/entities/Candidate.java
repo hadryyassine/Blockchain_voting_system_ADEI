@@ -1,55 +1,47 @@
 package com.Votechainbackend.BackendofADEIVotechain.entities;
 
-
-
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.Objects;
 
 @Entity
-@Table(name = "candidates")
-
-public class Candidate extends User {
-
-
+@Table(name = "candidate")
+public class Candidate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
-    @Column(name = "nbrVotes")
-    private int nbrVotes;
 
-    @Column(name = "positionTitle")
-    private String positionTitle;
+    @NotBlank
+    @Size(max = 40)
+    private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "election_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "election_id", nullable = false)
     private Election election;
 
-    // Getters and setters
+    public Candidate() {
 
-    @Override
+    }
+
+    public Candidate(String name) {
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }
 
-    @Override
     public void setId(Long id) {
         this.id = id;
     }
 
-    public int getNbrVotes() {
-        return nbrVotes;
+    public String getName() {
+        return name;
     }
 
-    public void setNbrVotes(int nbrVotes) {
-        this.nbrVotes = nbrVotes;
-    }
-
-    public String getPositionTitle() {
-        return positionTitle;
-    }
-
-    public void setPositionTitle(String positionTitle) {
-        this.positionTitle = positionTitle;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Election getElection() {
@@ -60,9 +52,16 @@ public class Candidate extends User {
         this.election = election;
     }
 
-    protected Candidate() {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Candidate candidate = (Candidate) o;
+        return Objects.equals(id, candidate.id);
     }
-    public Candidate(String name, String emailAddress, String apogeeCode, String password) {
-        super(name, emailAddress, apogeeCode, password);
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

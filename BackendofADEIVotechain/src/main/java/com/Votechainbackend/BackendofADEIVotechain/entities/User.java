@@ -1,48 +1,64 @@
 package com.Votechainbackend.BackendofADEIVotechain.entities;
 
-import javax.persistence.*;
 
+import com.Votechainbackend.BackendofADEIVotechain.entities.audit.DateAudit;
+import org.hibernate.annotations.NaturalId;
+
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "user")
-@Inheritance(strategy = InheritanceType.JOINED)
-public class User {
-
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {
+            "apogeecode"
+        }),
+        @UniqueConstraint(columnNames = {
+            "email"
+        })
+})
+public class User extends DateAudit {
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
+    @Size(max = 40)
+    private String name;
 
+    @NotBlank
+    @Size(max = 15)
+    private String apogeecode;
 
-    @Column(name = "name")
-    private String username;
-    @Column(name = "email")
-    private String emailAddress;
-    @Column(name = "apogee_Code")
+    @NaturalId
+    @NotBlank
+    @Size(max = 40)
+    @Email
+    private String email;
 
-    private String apogeeCode;
-
-    @Column(name = "password")
+    @NotBlank
+    @Size(max = 100)
     private String password;
 
-
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(  name = "user_roles",
+    @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<RoleE> roles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
 
     }
 
-
-
-    // Getters and setters
-
+    public User(String name, String apogeecode, String email, String password) {
+        this.name = name;
+        this.apogeecode = apogeecode;
+        this.email = email;
+        this.password = password;
+    }
 
     public Long getId() {
         return id;
@@ -52,29 +68,28 @@ public class User {
         this.id = id;
     }
 
-    public void setName(String name) {
-        this.username = name;
+    public String getApogeecode() {
+        return apogeecode;
+    }
+
+    public void setApogeecode(String apogeecode) {
+        this.apogeecode = apogeecode;
     }
 
     public String getName() {
-        return username;
+        return name;
     }
 
-
-    public String getEmailAddress() {
-        return emailAddress;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
+    public String getEmail() {
+        return email;
     }
 
-    public String getApogeeCode() {
-        return apogeeCode;
-    }
-
-    public void setApogeeCode(String apogeeCode) {
-        this.apogeeCode = apogeeCode;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -85,23 +100,11 @@ public class User {
         this.password = password;
     }
 
-    public Set<RoleE> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<RoleE> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
-
-
-
-    public User(String username, String emailAddress, String apogeeCode, String password ) {
-        this.username = username;
-        this.emailAddress = emailAddress;
-        this.apogeeCode = apogeeCode;
-        this.password = password;
-    }
-
-
-
 }
